@@ -205,4 +205,112 @@ public class TextAnalyzerTests
     {
         Assert.That(_analyzer.CountUniqueWords("Example. Text with many words. Words WORDS words."), Is.EqualTo(5));
     }
+    
+    [Test]
+    public void TestMostCommonWords1()
+    {
+        Assert.That(_analyzer.MostCommonWord("Example. Text with many words. Words WORDS words."), Is.EqualTo("words"));
+    }
+    
+    [Test]
+    public void TestMostCommonWords2()
+    {
+        Assert.That(_analyzer.MostCommonWord("word words"), Is.EqualTo("word"));
+    }
+    
+    [Test]
+    public void TestMostCommonWords3()
+    {
+        Assert.That(_analyzer.MostCommonWord("Sentence 1. Sentence 2. Sentence 3.\n"), Is.EqualTo("sentence"));
+    }
+    
+    [Test]
+    public void TestMostCommonWords4() 
+    {
+        Assert.That(_analyzer.MostCommonWord(""), Is.EqualTo(""));
+    }
+    
+    [Test]
+    public void TestMostCommonWords5()
+    {
+        Assert.That(_analyzer.MostCommonWord("      \t\t\t\n\n"), Is.EqualTo(""));
+    }
+    
+    [Test]
+    public void TestAvgWordLength1()
+    {
+        Assert.That(_analyzer.AvgWordLength("Zdanie zdanie zdanie zdanie zdanie."), Is.EqualTo(6));
+    }
+    
+    [Test]
+    public void TestAvgWordLength2()
+    {
+        Assert.That(_analyzer.AvgWordLength(""), Is.EqualTo(0));
+    }
+    
+    [Test]
+    public void TestAvgWordLength3()
+    {
+        Assert.That(_analyzer.AvgWordLength(".....----!!!!....?"), Is.EqualTo(0));
+    }
+
+    [Test]
+    public void TestLongestWord1()
+    {
+        Assert.That(_analyzer.LongestWord("Couple words and one thelongestword."), Is.EqualTo("thelongestword"));
+    }
+
+    [Test]
+    public void TestLongestWord2()
+    {
+        Assert.That(_analyzer.LongestWord(".....---??!"), Is.EqualTo(""));
+    }
+    
+    [Test]
+    public void TestLongestWord3()
+    {
+        Assert.That(_analyzer.LongestWord("..word...---??!"), Is.EqualTo("word"));
+    }
+
+    [Test]
+    public void TestLongestWord4()
+    {
+        Assert.That(_analyzer.LongestWord("word"), Is.EqualTo("word"));
+    }
+
+    [Test]
+    public void TestLongestWord5()
+    {
+        Assert.That(_analyzer.LongestWord(""), Is.EqualTo(""));
+    }
+
+    [Test]
+    public void TestShortestWord1()
+    {
+        Assert.That(_analyzer.ShortestWord(""), Is.EqualTo(""));
+    }
+    
+    [Test]
+    public void TestShortestWord2()
+    {
+        Assert.That(_analyzer.ShortestWord("lol couple words."), Is.EqualTo("lol"));
+    }
+
+    [Test]
+    public void TestShortestWord3()
+    {
+        Assert.That(_analyzer.ShortestWord(".....word ---- ???longer"), Is.EqualTo("word"));
+    }
+
+    [Test]
+    public void TestShortestWord4()
+    {
+        Assert.That(_analyzer.ShortestWord("Siema siema o tej porze..."), Is.EqualTo("o"));
+    }
+    
+    [Test]
+    public void TestShortestWord5()
+    {
+        Assert.That(_analyzer.ShortestWord("1 2 3 4 5 6"), Is.EqualTo("1"));
+    }
 }

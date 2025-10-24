@@ -95,6 +95,8 @@ public class TextAnalyzer : ITextAnalyzer
     {
         var words = GetWords(text);
 
+        if (words.Length == 0) return "";
+
         var wordCounts = new Dictionary<string, int>();
 
         foreach (var word in words)
@@ -143,9 +145,12 @@ public class TextAnalyzer : ITextAnalyzer
     public string ShortestWord(string text)
     {
         var words = GetWords(text);
-        var shortestWord = "";
+        
+        if  (words.Length == 0) return "";
+        
+        var shortestWord = words[0];
         int shortestLength = words[0].Length;
-
+        
         foreach (var word in words)
         {
             if (word.Length < shortestLength)
