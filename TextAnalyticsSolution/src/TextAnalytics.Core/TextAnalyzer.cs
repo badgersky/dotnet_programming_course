@@ -18,6 +18,7 @@ public interface ITextAnalyzer
     protected float AvgWordsPerSentence(string text);
     protected string LongestSentence(string text);
     protected string[] GetWords(string text);
+    protected string[] GetSentences(string text);
 }
 
 public class TextAnalyzer : ITextAnalyzer
@@ -138,19 +139,57 @@ public class TextAnalyzer : ITextAnalyzer
 
     public int CountSentences(string text)
     {
-        throw new NotImplementedException();
+        var sentences = GetSentences(text);
+        return sentences.Length;
     }
 
     public float AvgWordsPerSentence(string text)
     {
-        throw new NotImplementedException();
+        int sNum = CountSentences(text);
+        int wordNum = CountWords(text);
+        
+        if (sNum == 0) return 0f;
+        
+        return wordNum / (float)sNum;
     }
 
     public string LongestSentence(string text)
     {
-        throw new NotImplementedException();
+        var sentences = GetSentences(text);
+        int longestSentenceWordCount = 0;
+        string longestSentence = "";
+        
+        foreach (var sentence in sentences)
+        {
+            if (CountWords(sentence) > longestSentenceWordCount)
+            {
+                longestSentence = sentence;
+                longestSentenceWordCount = CountWords(sentence);
+            }
+        }
+        
+        return longestSentence;
     }
 
+    public string[] GetSentences(string text)
+    {
+        string[] notSentence = { "dr.", "prof.", "mgr.", "np.", "itd.", "itp.", "tj.", "tzn." };
+
+        foreach (var s in notSentence)
+        {
+            text = text.Replace(s, s.Replace(".", "[DOT]"));
+        }
+        
+        var sentences = text.Split(new[] {'.', '?', '!'}, StringSplitOptions.RemoveEmptyEntries);
+
+        for (int i = 0; i < sentences.Length; i++)
+        {
+            sentences[i] = sentences[i].Replace("[DOT]", ".");
+        }
+        
+        return sentences;
+    }
+    
     public string[] GetWords(string text)
     {
         foreach (var c in Punctuation)
