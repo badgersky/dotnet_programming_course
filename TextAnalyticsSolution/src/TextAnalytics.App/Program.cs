@@ -14,8 +14,23 @@ namespace TextAnalytics.App
             var serviceProvider = services.BuildServiceProvider();
             var inputService = serviceProvider.GetService<IInputService>();
             
-            string? filePath = null;
+            var filePath = ReadArgs(args);
             string? text = null;
+            
+            if (filePath == null)
+            {
+                if (inputService != null) text = inputService.ReadFromConsole();
+                Console.Write(text);
+            }
+            else
+            {
+                Console.WriteLine($"Text from file: {filePath}");
+            }
+        }
+
+        private static string? ReadArgs(string[] args)
+        {
+            string? filePath = null;
             
             if (args.Length > 0)
             {
@@ -48,18 +63,10 @@ namespace TextAnalytics.App
 
                 }
             }
-
-            if (filePath == null)
-            {
-                if (inputService != null) text = inputService.ReadFromConsole();
-                Console.Write(text);
-            }
-            else
-            {
-                Console.WriteLine($"Text from file: {filePath}");
-            }
+            
+            return filePath;
         }
-        
+
         private static void ShowHelp()
         {
             Console.WriteLine("Options:");
