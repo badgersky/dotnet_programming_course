@@ -17,10 +17,13 @@ public interface ITextAnalyzer
     protected int CountSentences(string text);
     protected float AvgWordsPerSentence(string text);
     protected string LongestSentence(string text);
+    protected string[] GetWords(string text);
 }
 
 public class TextAnalyzer : ITextAnalyzer
 {
+    private const string Punctuation = "!\"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~";
+
     public AnalysisRecord Analyze(string text)
     {
         throw new NotImplementedException();
@@ -53,32 +56,84 @@ public class TextAnalyzer : ITextAnalyzer
 
     public int CountWords(string text)
     {
-        throw new NotImplementedException();
+        var words = GetWords(text);
+        
+        return words.Length;
     }
 
     public int CountUniqueWords(string text)
     {
-        throw new NotImplementedException();
+        var words = GetWords(text);
+        
+        var hashWords = new HashSet<string>(words);
+        return hashWords.Count;
     }
 
     public string MostCommonWord(string text)
     {
-        throw new NotImplementedException();
+        var words = GetWords(text);
+
+        var wordCounts = new Dictionary<string, int>();
+
+        foreach (var word in words)
+        {
+            if (wordCounts.ContainsKey(word))
+            {
+                wordCounts[word]++;
+            }
+            else
+            {
+                wordCounts[word] = 1;
+            }
+        }
+        
+        return wordCounts.OrderByDescending(x => x.Value).First().Key;
     }
 
     public float AvgWordLength(string text)
     {
-        throw new NotImplementedException();
+        int wordNum = CountWords(text);
+        int letterNum = CountLetters(text);
+        
+        if (wordNum == 0) return 0f;
+        
+        return letterNum / (float)wordNum;
     }
 
     public string LongestWord(string text)
     {
-        throw new NotImplementedException();
+        var words = GetWords(text);
+        var longestWord = "";
+        int longestLength = 0;
+        
+        foreach (var word in words)
+        {
+            if (word.Length > longestLength)
+            {
+                longestLength = word.Length;
+                longestWord = word;
+            }    
+        }
+
+        return longestWord;
     }
 
     public string ShortestWord(string text)
     {
-        throw new NotImplementedException();
+        var words = GetWords(text);
+        var shortestWord = "";
+        int shortestLength = words[0].Length;
+
+        foreach (var word in words)
+        {
+            if (word.Length < shortestLength)
+            {
+                shortestWord = word;
+                shortestLength = word.Length;
+            }
+        }
+        
+        return shortestWord;
     }
 
     public int CountSentences(string text)
@@ -94,5 +149,18 @@ public class TextAnalyzer : ITextAnalyzer
     public string LongestSentence(string text)
     {
         throw new NotImplementedException();
+    }
+
+    public string[] GetWords(string text)
+    {
+        foreach (var c in Punctuation)
+        {
+            text = text.Replace(c.ToString(), "");
+        }
+        
+        char[] whiteSpace = [' ', '\t', '\n'];
+        string[] words  = text.ToLower().Split(whiteSpace,  StringSplitOptions.RemoveEmptyEntries);
+        
+        return words;
     }
 }
