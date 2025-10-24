@@ -10,7 +10,8 @@ namespace TextAnalytics.App
         private static void Main(string[] args)
         {
             var services = new ServiceCollection();
-            services.AddSingleton<IInputService, InputService>();
+            ConfigureServices(services);
+
             var serviceProvider = services.BuildServiceProvider();
             var inputService = serviceProvider.GetService<IInputService>();
             
@@ -24,8 +25,14 @@ namespace TextAnalytics.App
             }
             else
             {
-                Console.WriteLine($"Text from file: {filePath}");
+                if (inputService != null) text = inputService.ReadFromFile(filePath);
+                Console.Write(text);
             }
+        }
+
+        private static void ConfigureServices(IServiceCollection services)
+        {
+            services.AddSingleton<IInputService, InputService>();
         }
 
         private static string? ReadArgs(string[] args)
