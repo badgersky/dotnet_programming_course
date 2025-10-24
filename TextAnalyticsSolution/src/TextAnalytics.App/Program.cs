@@ -1,10 +1,9 @@
-﻿using System;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using TextAnalytics.Services;
 
 namespace TextAnalytics.App 
 {
-    internal class Program
+    internal abstract class Program
     {
 
         private static void Main(string[] args)
@@ -16,18 +15,9 @@ namespace TextAnalytics.App
             var inputService = serviceProvider.GetService<IInputService>();
             
             var filePath = ReadArgs(args);
-            string? text = null;
+            var text = inputService?.ReadText(filePath);
             
-            if (filePath == null)
-            {
-                if (inputService != null) text = inputService.ReadFromConsole();
-                Console.Write(text);
-            }
-            else
-            {
-                if (inputService != null) text = inputService.ReadFromFile(filePath);
-                Console.Write(text);
-            }
+            Console.Write(text);
         }
 
         private static void ConfigureServices(IServiceCollection services)

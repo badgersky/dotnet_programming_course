@@ -2,20 +2,18 @@ namespace TextAnalytics.Services;
 
 public interface IInputService
 {
-    string ReadFromConsole();
-    string ReadFromFile(string? filePath = null);
+    string ReadText(string? filePath);
 }
 
 public class InputService : IInputService
 {
-    public string ReadFromFile(string? filePath = null)
+    public string ReadText(string? filePath = null)
     {
-        if (filePath == null)
-        {
-            Console.WriteLine("Enter valid path to a file:");
-            filePath = Console.ReadLine();
-        }
+        return filePath == null ? ReadFromConsole() : ReadFromFile(filePath);
+    }
 
+    private static string ReadFromFile(string filePath)
+    {
         if (File.Exists(filePath)) return File.ReadAllText(filePath);
             
         Console.WriteLine("File does not exist");
@@ -23,7 +21,7 @@ public class InputService : IInputService
         return string.Empty;
     }
 
-    public string ReadFromConsole()
+    private static string ReadFromConsole()
     {
         string? ans;
         var result = "";
@@ -43,7 +41,15 @@ public class InputService : IInputService
 
         if (ans == "y")
         {
-            return ReadFromFile();
+            string? filePath = null;
+            while (string.IsNullOrEmpty(filePath))
+            {
+                Console.WriteLine("Enter valid path to a file:");
+                filePath = Console.ReadLine();
+            }
+
+            filePath = filePath.Trim();
+            return ReadFromFile(filePath);
         }
 
         Console.WriteLine("Enter text to analyze:");
