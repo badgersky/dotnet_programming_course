@@ -194,7 +194,7 @@ public class TextAnalyzer : ITextAnalyzer
             }
         }
         
-        return longestSentence;
+        return longestSentence.Trim();
     }
 
     public string[] GetSentences(string text)
@@ -205,6 +205,8 @@ public class TextAnalyzer : ITextAnalyzer
         {
             text = text.Replace(s, s.Replace(".", "[DOT]"));
         }
+
+        text = text.Trim();
         
         var sentences = text.Split(['.', '?', '!'], StringSplitOptions.RemoveEmptyEntries);
 

@@ -313,4 +313,106 @@ public class TextAnalyzerTests
     {
         Assert.That(_analyzer.ShortestWord("1 2 3 4 5 6"), Is.EqualTo("1"));
     }
+    
+    [Test]
+    public void TestCountSentences1()
+    {
+        Assert.That(_analyzer.CountSentences("Siema siema o tej porze..."), Is.EqualTo(1));
+    }
+    
+    [Test]
+    public void TestCountSentences2()
+    {
+        Assert.That(_analyzer.CountSentences("Siema siema o tej porze."), Is.EqualTo(1));
+    }
+    
+    [Test]
+    public void TestCountSentences3()
+    {
+        Assert.That(_analyzer.CountSentences("Siema siema o tej porze.\n\n"), Is.EqualTo(1));
+    }
+    
+    [Test]
+    public void TestCountSentences4()
+    {
+        Assert.That(_analyzer.CountSentences("Siema siema o tej porze. Kazdy wypic moze!"), Is.EqualTo(2));
+    }
+    
+    [Test]
+    public void TestCountSentences5()
+    {
+        Assert.That(_analyzer.CountSentences("Siema. Siema! O. Tej. Porze? Kazdy?\n\n"), Is.EqualTo(6));
+    }
+    
+    [Test]
+    public void TestCountSentences6()
+    {
+        Assert.That(_analyzer.CountSentences(""), Is.EqualTo(0));
+    }
+    
+    [Test]
+    public void TestCountSentences7()
+    {
+        Assert.That(_analyzer.CountSentences("Jedno zdanie bez kropki"), Is.EqualTo(1));
+    }
+    
+    [Test]
+    public void TestAvgWordsPerSentence1()
+    {
+        Assert.That(_analyzer.AvgWordsPerSentence("Siema. Siema! O. Tej. Porze? Kazdy?\n\n"), Is.EqualTo(1));
+    }
+    
+    [Test]
+    public void TestAvgWordsPerSentence2()
+    {
+        Assert.That(_analyzer.AvgWordsPerSentence(""), Is.EqualTo(0));
+    }
+
+    [Test]
+    public void TestAvgWordsPerSentence3()
+    {
+        Assert.That(_analyzer.AvgWordsPerSentence("Jedno zdanie"), Is.EqualTo(2));
+    }
+    
+    [Test]
+    public void TestAvgWordsPerSentence4()
+    {
+        Assert.That(_analyzer.AvgWordsPerSentence("Sentence 1. Sentence 2! Sentence 3"), Is.EqualTo(2));
+    }
+    
+    [Test]
+    public void TestLongestSentence1()
+    {
+        Assert.That(_analyzer.LongestSentence("Sentence 1. Sentence 2! Sentence 3"), Is.EqualTo("Sentence 1"));
+    }
+    
+    [Test]
+    public void TestLongestSentence2()
+    {
+        Assert.That(_analyzer.LongestSentence("Sentence 1. Sentence 2 and 3."), Is.EqualTo("Sentence 2 and 3"));
+    }
+    
+    [Test]
+    public void TestLongestSentence3()
+    {
+        Assert.That(_analyzer.LongestSentence("One sentence"), Is.EqualTo("One sentence"));
+    }
+    
+    [Test]
+    public void TestLongestSentence4()
+    {
+        Assert.That(_analyzer.LongestSentence(""), Is.EqualTo(""));
+    }
+    
+    [Test]
+    public void TestLongestSentence5()
+    {
+        Assert.That(_analyzer.LongestSentence("Sentence 1\n\nsentence2."), Is.EqualTo("Sentence 1\n\nsentence2"));
+    }
+    
+    [Test]
+    public void TestLongestSentence6()
+    {
+        Assert.That(_analyzer.LongestSentence("Siema - stary."), Is.EqualTo("Siema - stary"));
+    }
 }
