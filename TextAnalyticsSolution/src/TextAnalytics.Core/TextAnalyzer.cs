@@ -52,7 +52,13 @@ public class TextAnalyzer : ITextAnalyzer
 
     public int CountCharactersNoSpaces(string text)
     {
-        return text.Replace(" ", "").Length;
+        char[] whiteSpace = [' ', '\t', '\n'];
+        foreach (var space in whiteSpace)
+        {
+            text = text.Replace(space.ToString(), "");
+        }
+        
+        return text.Length;
     }
 
     public int CountLetters(string text)
@@ -188,14 +194,14 @@ public class TextAnalyzer : ITextAnalyzer
 
     public string[] GetSentences(string text)
     {
-        string[] notSentence = { "dr.", "prof.", "mgr.", "np.", "itd.", "itp.", "tj.", "tzn." };
+        string[] notSentence = ["dr.", "prof.", "mgr.", "np.", "itd.", "itp.", "tj.", "tzn."];
 
         foreach (var s in notSentence)
         {
             text = text.Replace(s, s.Replace(".", "[DOT]"));
         }
         
-        var sentences = text.Split(new[] {'.', '?', '!'}, StringSplitOptions.RemoveEmptyEntries);
+        var sentences = text.Split(['.', '?', '!'], StringSplitOptions.RemoveEmptyEntries);
 
         for (int i = 0; i < sentences.Length; i++)
         {

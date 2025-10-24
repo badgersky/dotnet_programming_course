@@ -22,4 +22,8 @@
         <Using Include="NUnit.Framework"/>
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\..\src\TextAnalytics.Core\TextAnalytics.Core.csproj" />
+    </ItemGroup>
+
 </Project>
