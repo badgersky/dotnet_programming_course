@@ -1,17 +1,22 @@
 namespace TextAnalytics.Services;
 
-public class InputService
+public interface IInputService
 {
-    private string ReadFromConsole()
+    string ReadFromConsole();
+}
+
+public class InputService : IInputService
+{
+    public string ReadFromConsole()
     {
         string? ans;
-        string result = "";
+        var result = "";
         string? line;
         while (true)
         {   
             Console.WriteLine("Do you want to load text from file? y/n");
             ans = Console.ReadLine();
-            if (ans != "y" || ans != "n")
+            if (ans != "y" && ans != "n")
             {
                 Console.WriteLine("Enter y or n");
             }

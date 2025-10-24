@@ -1,4 +1,6 @@
 ﻿using System;
+using Microsoft.Extensions.DependencyInjection;
+using TextAnalytics.Services;
 
 namespace TextAnalytics.App 
 {
@@ -7,7 +9,13 @@ namespace TextAnalytics.App
 
         private static void Main(string[] args)
         {
+            var services = new ServiceCollection();
+            services.AddSingleton<IInputService, InputService>();
+            var serviceProvider = services.BuildServiceProvider();
+            var inputService = serviceProvider.GetService<IInputService>();
+            
             string? filePath = null;
+            string? text = null;
             
             if (args.Length > 0)
             {
@@ -43,7 +51,8 @@ namespace TextAnalytics.App
 
             if (filePath == null)
             {
-                Console.WriteLine("Text from stdin");
+                if (inputService != null) text = inputService.ReadFromConsole();
+                Console.Write(text);
             }
             else
             {
