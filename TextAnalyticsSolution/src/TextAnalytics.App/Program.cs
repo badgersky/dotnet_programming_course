@@ -15,6 +15,7 @@ namespace TextAnalytics.App
             var serviceProvider = services.BuildServiceProvider();
             var inputService = serviceProvider.GetService<IInputService>();
             var analizeService = serviceProvider.GetService<ITextAnalyzer>();
+            var outputService = serviceProvider.GetService<IOutputService>();
             
             var filePath = ReadArgs(args);
             var text = inputService?.ReadText(filePath);
@@ -22,7 +23,7 @@ namespace TextAnalytics.App
             if (text != null)
             {
                 var analyzeResult = analizeService?.Analyze(text);
-                Console.Write(analyzeResult);
+                if (analyzeResult != null) outputService?.WriteResult(analyzeResult);
             }
         }
 
@@ -30,6 +31,7 @@ namespace TextAnalytics.App
         {
             services.AddSingleton<IInputService, InputService>();
             services.AddSingleton<ITextAnalyzer, TextAnalyzer>();
+            services.AddSingleton<IOutputService, OutputService>();
         }
 
         private static string? ReadArgs(string[] args)
