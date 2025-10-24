@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using TextAnalytics.Core;
 using TextAnalytics.Services;
 
 namespace TextAnalytics.App 
@@ -13,16 +14,22 @@ namespace TextAnalytics.App
 
             var serviceProvider = services.BuildServiceProvider();
             var inputService = serviceProvider.GetService<IInputService>();
+            var analizeService = serviceProvider.GetService<ITextAnalyzer>();
             
             var filePath = ReadArgs(args);
             var text = inputService?.ReadText(filePath);
-            
-            Console.Write(text);
+
+            if (text != null)
+            {
+                var analyzeResult = analizeService?.Analyze(text);
+                Console.Write(analyzeResult);
+            }
         }
 
         private static void ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton<IInputService, InputService>();
+            services.AddSingleton<ITextAnalyzer, TextAnalyzer>();
         }
 
         private static string? ReadArgs(string[] args)

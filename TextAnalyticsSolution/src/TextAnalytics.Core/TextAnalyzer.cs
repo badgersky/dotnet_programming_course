@@ -27,7 +27,22 @@ public class TextAnalyzer : ITextAnalyzer
 
     public AnalysisRecord Analyze(string text)
     {
-        throw new NotImplementedException();
+        return new AnalysisRecord(
+            CharacterCount: CountCharacters(text),
+            CharacterCountNoSpaces: CountCharactersNoSpaces(text),
+            LetterCount: CountLetters(text),
+            DigitCount: CountDigits(text),
+            PunctuationCount: CountPunctuation(text),
+            WordCount: CountWords(text),
+            UniqueWordCount: CountUniqueWords(text),
+            MostCommonWord: MostCommonWord(text),
+            AvgWordLength: AvgWordLength(text),
+            LongestWord: LongestWord(text),
+            ShortestWord: ShortestWord(text),
+            SentenceCount: CountSentences(text),
+            AvgWordsPerSentence: AvgWordsPerSentence(text),
+            LongestSentence: LongestSentence(text)
+        );
     }
 
     public int CountCharacters(string text)
