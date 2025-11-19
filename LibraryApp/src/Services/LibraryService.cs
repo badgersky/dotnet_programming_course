@@ -22,7 +22,7 @@ public class LibraryService : ILibraryService
     {
         if (string.IsNullOrWhiteSpace(title) || string.IsNullOrWhiteSpace(author)) return false;
 
-        if (!string.IsNullOrWhiteSpace(isbn) && !string.IsNullOrWhiteSpace(isbn)) return false;
+        if (!string.IsNullOrWhiteSpace(isbn) && !string.IsNullOrWhiteSpace(format)) return false;
 
         LibraryItem? item = null;
         if (string.IsNullOrWhiteSpace(isbn))
