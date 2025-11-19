@@ -22,7 +22,6 @@ public class UserInputService : IUserInputService
     {
         while (true)
         {
-            Console.Write(prompt);
             var input = ReadString(prompt);
 
             if (int.TryParse(input, out var value) && value > 0)

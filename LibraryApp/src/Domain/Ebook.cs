@@ -21,7 +21,7 @@ public class Ebook : LibraryItem
         Console.WriteLine($" Title: {Title}");
         Console.WriteLine($"Author: {Author}");
         Console.WriteLine($"Format: {Format}");
-        Console.WriteLine($"Status: {(IsA  ? "RESERVED" : "AVAILABLE")}");
+        Console.WriteLine($"Status: {(IsA  ? "AVAILABLE" : "RENTED")}");
         Console.WriteLine("-----------------------------------------");
     }
 }

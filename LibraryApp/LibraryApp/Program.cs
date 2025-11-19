@@ -25,7 +25,7 @@ class Program
         
         while (true)
         {
-            Console.WriteLine("---------------------------");
+            Console.WriteLine("-----------------------------------------");
             Console.WriteLine("1. Add Book");
             Console.WriteLine("2. Add E-Book");
             Console.WriteLine("3. Add user");
@@ -35,7 +35,7 @@ class Program
             Console.WriteLine("7. List of active rentals");
             Console.WriteLine("8. List of users");
             Console.WriteLine("0. Quit");
-            Console.WriteLine("---------------------------");
+            Console.WriteLine("-----------------------------------------");
             Console.Write("\nChose: ");
             
             string? choice = Console.ReadLine();
@@ -82,7 +82,7 @@ class Program
 
         foreach (var user in enumerable)
         {
-            Console.WriteLine(user.Username);
+            user.DisplayInfo();
         }
     }
 
@@ -122,17 +122,24 @@ class Program
 
     private static void ReturnI(ILibraryService library, IUserInputService input)
     {
-        throw new NotImplementedException();
+        int itemId = input.ReadInt("ItemId: ");
+        
+        library.ReturnItem(itemId);
     }
 
     private static void RentI(ILibraryService library, IUserInputService input)
     {
-        throw new NotImplementedException();
+        int itemId = input.ReadInt("ItemId: ");
+        int userId = input.ReadInt("UserId: ");
+        
+        library.RentItem(itemId, userId);
     }
 
     private static void AUser(ILibraryService library, IUserInputService input)
     {
-        throw new NotImplementedException();
+        string username = input.ReadString("Username: ");
+
+        library.AddUser(username);
     }
 
     private static void ABook(ILibraryService library, IUserInputService input)

@@ -19,7 +19,7 @@ public class Book : LibraryItem
         Console.WriteLine($" Title: {Title}");
         Console.WriteLine($"Author: {Author}");
         Console.WriteLine($"  ISBN: {Isbn}");
-        Console.WriteLine($"Status: {(IsA ? "RESERVED" : "AVAILABLE")}");
+        Console.WriteLine($"Status: {(IsA  ? "AVAILABLE" : "RENTED")}");
         Console.WriteLine("-----------------------------------------");
     }
 }

@@ -10,4 +10,12 @@ public class User
         Id = id;
         Username = username.Trim();
     }
+
+    public void DisplayInfo()
+    {
+        Console.WriteLine("-----------------------------------------");
+        Console.WriteLine($"User ID: {Id}");
+        Console.WriteLine($"Username: {Username}");
+        Console.WriteLine("-----------------------------------------");
+    }
 }
