@@ -2,6 +2,13 @@
 
 public class UserInputService
 {
+    private List<string> _goodF;
+
+    public UserInputService()
+    {
+        _goodF = new List<string> {"pdf", "epub", "mobi"};
+    }
+
     public static string ReadString(string prompt)
     {
         while (true)
@@ -24,14 +31,29 @@ public class UserInputService
         while (true)
         {
             Console.Write(prompt);
-            var input = Console.ReadLine()?.Trim();
+            var input = ReadString(prompt);
 
             if (int.TryParse(input, out var value) && value > 0)
             {
                 return value;
             }
 
-            Console.WriteLine("This cannot be empty! Enter a positive number!");
+            Console.WriteLine("Enter a positive number!");
+        }
+    }
+
+    public string ReadFormat(string prompt)
+    {
+        while (true)
+        {
+            var input = ReadString(prompt);
+
+            if (_goodF.Contains(input.ToLower()))
+            {
+                return input;
+            }
+            
+            Console.WriteLine("That's not a valid format!");
         }
     }
 
@@ -102,7 +124,7 @@ public class UserInputService
         {
             return false;
         }
-        if (last < 'X' || last > 'x')
+        if (last == 'X' || last == 'x')
         {
             checkDigit = 10;    
         }
