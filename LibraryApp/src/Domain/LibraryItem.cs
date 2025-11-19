@@ -9,7 +9,7 @@ public abstract class LibraryItem
     protected LibraryItem(int id, string title)
     {
         Id = id;
-        Title = title;
+        Title = title.Trim();
     }
     
     public abstract void DisplayInfo();

@@ -1,25 +1,27 @@
 namespace Domain;
 
-public class Book : LibraryItem
+public class Ebook : LibraryItem
 {
-    public string Author { get; set; }
-    public string Isbn { get; set; }
+    public string Author { get;  set; }
+    public string Format { get;  set; }
     
-    public Book(int id, string title, string author, string isbn) : base(id, title)
-    {   
+    
+    public Ebook(int id, string title, string format, string author) : base(id, title)
+    {
         Author = author.Trim();
-        Isbn = isbn.Trim();
+        Format = format.Trim();
+        
     }
 
     public override void DisplayInfo()
     {
         Console.WriteLine("────────────────────────────────────────");
-        Console.WriteLine("  TYPE: BOOK");
+        Console.WriteLine("  TYPE: E-BOOK");
         Console.WriteLine($"    ID: {Id}");
         Console.WriteLine($" Title: {Title}");
         Console.WriteLine($"Author: {Author}");
-        Console.WriteLine($"  ISBN: {Isbn}");
-        Console.WriteLine($"Status: {(IsA ? "RESERVED" : "AVAILABLE")}");
+        Console.WriteLine($"Format: {Format}");
+        Console.WriteLine($"Status: {(IsA  ? "RESERVED" : "AVAILABLE")}");
         Console.WriteLine("────────────────────────────────────────");
     }
 }
