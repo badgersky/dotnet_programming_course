@@ -10,4 +10,5 @@ public interface ILibraryService
     bool ReturnItem(int itemId);
     IEnumerable<LibraryItem> GetItems();
     IEnumerable<ItemRental> GetRentals();
+    IEnumerable<User> GetUsers();
 }

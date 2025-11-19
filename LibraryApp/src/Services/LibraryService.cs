@@ -22,6 +22,8 @@ public class LibraryService : ILibraryService
     {
         if (string.IsNullOrWhiteSpace(title) || string.IsNullOrWhiteSpace(author)) return false;
 
+        if (!string.IsNullOrWhiteSpace(isbn) && !string.IsNullOrWhiteSpace(isbn)) return false;
+
         LibraryItem? item = null;
         if (string.IsNullOrWhiteSpace(isbn))
         {
@@ -110,5 +112,10 @@ public class LibraryService : ILibraryService
     public IEnumerable<ItemRental> GetRentals()
     {
         return _itemRentals;
+    }
+
+    public IEnumerable<User> GetUsers()
+    {
+        return  _users;
     }
 }
