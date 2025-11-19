@@ -1,8 +1,8 @@
 ﻿namespace Services;
 
-public class UserInputService
+public class UserInputService : IUserInputService
 {
-    public static string ReadString(string prompt)
+    public string ReadString(string prompt)
     {
         while (true)
         {
@@ -18,7 +18,7 @@ public class UserInputService
         }
     }
 
-    public static int ReadInt(string prompt)
+    public int ReadInt(string prompt)
     {
         while (true)
         {
@@ -34,7 +34,7 @@ public class UserInputService
         }
     }
 
-    public static string ReadFormat(string prompt)
+    public string ReadFormat(string prompt)
     {
         List<string> goodF = ["pdf", "epub", "mobi"];
         
@@ -51,7 +51,7 @@ public class UserInputService
         }
     }
 
-    public static string ReadIsbn(string prompt)
+    public string ReadIsbn(string prompt)
     {
         while (true)
         {
@@ -66,7 +66,7 @@ public class UserInputService
         }
     }
 
-    private static bool IsValidIsbn13(string isbn)
+    public bool IsValidIsbn13(string isbn)
     {
         if (isbn.Length != 13)
             return false;
@@ -93,8 +93,8 @@ public class UserInputService
         var checksum = (10 - (sum % 10)) % 10;
         return checksum == (isbn[12] - '0');
     }
-    
-    private static bool IsValidIsbn10(string isbn)
+
+    public bool IsValidIsbn10(string isbn)
     {
         if (isbn.Length != 10)
             return false;
