@@ -15,13 +15,13 @@ public class Ebook : LibraryItem
 
     public override void DisplayInfo()
     {
-        Console.WriteLine("────────────────────────────────────────");
+        Console.WriteLine("-----------------------------------------");
         Console.WriteLine("  TYPE: E-BOOK");
         Console.WriteLine($"    ID: {Id}");
         Console.WriteLine($" Title: {Title}");
         Console.WriteLine($"Author: {Author}");
         Console.WriteLine($"Format: {Format}");
         Console.WriteLine($"Status: {(IsA  ? "RESERVED" : "AVAILABLE")}");
-        Console.WriteLine("────────────────────────────────────────");
+        Console.WriteLine("-----------------------------------------");
     }
 }

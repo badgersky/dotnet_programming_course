@@ -19,12 +19,13 @@ class Program
             return;
         }
 
-        Console.WriteLine("════════════════════════════════════");
+        Console.WriteLine("------------------------------------");
         Console.WriteLine("           L I B R A R Y");
-        Console.WriteLine("════════════════════════════════════");
+        Console.WriteLine("------------------------------------");
         
         while (true)
         {
+            Console.WriteLine("---------------------------");
             Console.WriteLine("1. Add Book");
             Console.WriteLine("2. Add E-Book");
             Console.WriteLine("3. Add user");
@@ -34,6 +35,7 @@ class Program
             Console.WriteLine("7. List of active rentals");
             Console.WriteLine("8. List of users");
             Console.WriteLine("0. Quit");
+            Console.WriteLine("---------------------------");
             Console.Write("\nChose: ");
             
             string? choice = Console.ReadLine();
@@ -41,7 +43,7 @@ class Program
             switch (choice)
             {
                 case "1": ABook(libraryS, inputS); break;
-                case "2": AEBook(libraryS, inputS); break;
+                case "2": AeBook(libraryS, inputS); break;
                 case "3": AUser(libraryS, inputS); break;
                 case "4": RentI(libraryS, inputS); break;
                 case "5": ReturnI(libraryS, inputS); break;
@@ -59,9 +61,14 @@ class Program
         }
     }
 
-    private static void AEBook(ILibraryService libraryS, IUserInputService inputS)
+    private static void AeBook(ILibraryService library, IUserInputService input)
     {
-        throw new NotImplementedException();
+        var title = input.ReadString("Title: ");
+        var author = input.ReadString("Author: ");
+        var format = input.ReadFormat("Format: ");
+        
+        library.AddItem(title, author, "", format);
+        Console.WriteLine("E-Book added");
     }
 
     private static void ShowU(ILibraryService library)
@@ -81,12 +88,36 @@ class Program
 
     private static void ShowR(ILibraryService library)
     {
-        throw new NotImplementedException();
+        var rentals =  library.GetRentals();
+        var enumerable = rentals.ToList();
+        if (!enumerable.Any())
+        {
+            Console.WriteLine("No rentals");
+        }
+
+        foreach (var rental in enumerable)
+        {
+            if (!rental.Returned)
+            {
+                Console.WriteLine(rental);
+            }
+        }
+
     }
 
     private static void ShowI(ILibraryService library)
     {
-        throw new NotImplementedException();
+        var items = library.GetItems();
+        var enumerable = items.ToList();
+        if (!enumerable.Any())
+        {
+            Console.WriteLine("No items");
+        }
+
+        foreach (var item in enumerable)
+        {
+            item.DisplayInfo();
+        }
     }
 
     private static void ReturnI(ILibraryService library, IUserInputService input)
@@ -106,7 +137,12 @@ class Program
 
     private static void ABook(ILibraryService library, IUserInputService input)
     {
-        throw new NotImplementedException();
+        var title =  input.ReadString("Title: ");
+        var author = input.ReadString("Author: ");
+        var isbn  = input.ReadIsbn("Isbn: ");
+        
+        library.AddItem(title, author, isbn);
+        Console.WriteLine("Book added");
     }
 
     private static void ConfigureServices(IServiceCollection services)
