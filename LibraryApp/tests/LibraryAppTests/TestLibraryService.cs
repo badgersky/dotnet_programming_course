@@ -96,4 +96,69 @@ public class TestLibraryService
         Assert.That(enumerable.First().Id, Is.EqualTo(0));
         Assert.That(enumerable[1].Id, Is.EqualTo(1));
     }
+    
+    [Test]
+    public void TestAddRental1()
+    {
+        var s = new LibraryService();
+
+        s.AddItem("title", "author", "", "pdf");
+        s.AddUser("username");
+        s.RentItem(0, 0);
+        var rentals = s.GetRentals();
+        var items =  s.GetItems();
+        var enumerable1 = items.ToList();
+        var enumerable2 = rentals.ToList();
+        
+        Assert.That(enumerable1.First().IsA, Is.EqualTo(true));
+        Assert.That(enumerable2.Count(), Is.EqualTo(1));
+    }
+    
+    [Test]
+    public void TestAddRental2()
+    {
+        var s = new LibraryService();
+
+        s.AddItem("title", "author", "12323");
+        s.AddUser("username");
+        s.RentItem(0, 0);
+        var rentals = s.GetRentals();
+        var items =  s.GetItems();
+        var enumerable1 = items.ToList();
+        var enumerable2 = rentals.ToList();
+        
+        Assert.That(enumerable1.First().IsA, Is.EqualTo(false));
+        Assert.That(enumerable2.Count(), Is.EqualTo(1));
+    }
+    
+    [Test]
+    public void TestAddRental3()
+    {
+        var s = new LibraryService();
+        
+        s.AddUser("username");
+        s.RentItem(0, 0);
+        var rentals = s.GetRentals();
+        var enumerable1 = rentals.ToList();
+        
+        Assert.That(enumerable1.Count(), Is.EqualTo(0));
+    }
+    
+    [Test]
+    public void TestReturnItem()
+    {
+        var s = new LibraryService();
+        
+        s.AddItem("title", "author", "12323");
+        s.AddUser("username");
+        s.RentItem(0, 0);
+        s.ReturnItem(0);
+        var items = s.GetItems();
+        var rentals = s.GetRentals();
+        var enumerable1 = rentals.ToList();
+        var enumerable2 = items.ToList();
+        
+        Assert.That(enumerable1.First().Returned, Is.EqualTo(true));
+        Assert.That(enumerable2.First().IsA, Is.EqualTo(true));
+    }
 }
