@@ -2,19 +2,21 @@ namespace Domain;
 
 public class ItemRental
 {
-    public int UserId { get; }
-    public int ItemId { get; }
+    public LibraryItem Item { get; }
+    public User User { get; }
     public DateTime RTimestamp { get; }
+    public bool Returned;
 
-    public ItemRental(int userId, int itemId)
+    public ItemRental(LibraryItem item, User user)
     {
-        UserId = userId;
-        ItemId = itemId;
+        Item = item;
+        User = user;
+        Returned = false;
         RTimestamp = DateTime.Now;
     }
 
     public override string ToString()
     {
-        return $"Item ID: {ItemId}, User ID: {UserId}";
+        return $"Item ID: {Item.Id}, User ID: {User.Id}";
     }
 }

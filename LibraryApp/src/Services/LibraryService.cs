@@ -4,35 +4,111 @@ namespace Services;
 
 public class LibraryService : ILibraryService
 {
-    
-    
-    public void AddItem(LibraryItem item)
+    private readonly List<LibraryItem> _items = [];
+    private readonly List<User> _users = [];
+    private readonly List<ItemRental> _itemRentals = [];
+    private int _nextU;
+    private int _nextI;
+    private int _nextR;
+
+    public LibraryService()
     {
-        throw new NotImplementedException();
+        this._nextU = _nextU = 0;
+        this._nextI = _nextI = 0;
+        this._nextR = _nextR = 0;
     }
 
-    public void AddUser(User u)
+    public bool AddItem(string title, string author, string isbn = "", string format = "")
     {
-        throw new NotImplementedException();
+        if (string.IsNullOrWhiteSpace(title) || string.IsNullOrWhiteSpace(author)) return false;
+
+        LibraryItem? item = null;
+        if (string.IsNullOrWhiteSpace(isbn))
+        {
+            item = new Ebook(_nextI, title, format, author);
+            _nextI++;
+        }
+
+        if (string.IsNullOrWhiteSpace(format))
+        {
+            item = new Book(_nextI, title, author, isbn);
+            _nextI++;
+        }
+
+        if (item == null) return false;
+        _items.Add(item);
+        return true;
     }
 
-    public void RentItem(int itemId, int uId)
+    public bool AddUser(string username)
     {
-        throw new NotImplementedException();
+        if (string.IsNullOrEmpty(username)) return false;
+        if (_users.Any(u => u.Username == username)) return false;
+        
+        var user = new User(username, _nextU);
+        _users.Add(user);
+        
+        _nextU++;
+        return true;
     }
 
-    public void ReturnItem(int itemId, int uId)
+    public bool RentItem(int itemId, int userId)
     {
-        throw new NotImplementedException();
+        var item = _items.FirstOrDefault(i => i.Id == itemId);
+        if (item == null)
+        {
+            Console.WriteLine($"Item with id {itemId} not found");
+            return false;
+        }
+        
+        var user =  _users.FirstOrDefault(u => u.Id == userId);
+        if (user == null)
+        {
+            Console.WriteLine($"User with id {userId} not found");
+            return false;
+        }
+
+        if (!item.IsA)
+        {
+            Console.WriteLine($"Item with id {itemId} is not available");
+            return false;
+        }
+
+        if (item.GetType() == typeof(Book)) item.IsA = false;
+
+        var newRent = new ItemRental(item, user);
+        _itemRentals.Add(newRent);
+        return true;
+    }
+
+    public bool ReturnItem(int itemId)
+    {
+        var item = _items.FirstOrDefault(i => i.Id == itemId);
+        if (item == null)
+        {
+            Console.WriteLine($"Item with id {itemId} not found");
+            return false;
+        }
+        
+        var rental = _itemRentals.FirstOrDefault(r => r.Item.Id == itemId);
+        if (rental == null)
+        {
+            Console.WriteLine($"Rental with id {itemId} not found");
+            return false;
+        }
+        
+        rental.Returned = true;
+        item.IsA = true;
+        return true;
     }
 
     public IEnumerable<LibraryItem> GetItems()
     {
-        throw new NotImplementedException();
+        return _items;
     }
 
     public IEnumerable<ItemRental> GetRentals()
     {
-        throw new NotImplementedException();
+        return _itemRentals;
     }
 }

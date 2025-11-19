@@ -4,10 +4,10 @@ namespace Services;
 
 public interface ILibraryService
 {
-    void AddItem(LibraryItem item);
-    void AddUser(User u);
-    void RentItem(int itemId, int uId);
-    void ReturnItem(int itemId, int uId);
+    bool AddItem(string title, string author, string isbn = "", string format = "");
+    bool AddUser(string username);
+    bool RentItem(int itemId, int userId);
+    bool ReturnItem(int itemId);
     IEnumerable<LibraryItem> GetItems();
     IEnumerable<ItemRental> GetRentals();
 }
