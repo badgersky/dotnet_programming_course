@@ -2,13 +2,6 @@
 
 public class UserInputService
 {
-    private List<string> _goodF;
-
-    public UserInputService()
-    {
-        _goodF = new List<string> {"pdf", "epub", "mobi"};
-    }
-
     public static string ReadString(string prompt)
     {
         while (true)
@@ -41,15 +34,17 @@ public class UserInputService
         }
     }
 
-    public string ReadFormat(string prompt)
+    public static string ReadFormat(string prompt)
     {
+        List<string> goodF = ["pdf", "epub", "mobi"];
+        
         while (true)
         {
             var input = ReadString(prompt);
 
-            if (_goodF.Contains(input.ToLower()))
+            if (goodF.Contains(input.ToLower()))
             {
-                return input;
+                return input.ToLower();
             }
             
             Console.WriteLine("That's not a valid format!");
