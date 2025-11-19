@@ -25,7 +25,6 @@ public class UserInputService
         }
     }
 
-
     public static int ReadInt(string prompt)
     {
         while (true)
