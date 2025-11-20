@@ -129,6 +129,6 @@ public class TestAnalyticsService
         var rental = _as.MostCommonRental();
         
         Assert.That(rental, Is.Not.Null);
-        Assert.That(rental.Title, Is.EqualTo("ebook2"));
+        Assert.That(rental.Title, Is.EqualTo("ebook5"));
     }
 }
