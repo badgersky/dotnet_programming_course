@@ -13,8 +13,9 @@ class Program
 
         var inputS = serviceProvider.GetService<IUserInputService>();
         var libraryS = serviceProvider.GetService<ILibraryService>();
+        var analyticS = serviceProvider.GetService<IAnalyticService>();
 
-        if (inputS == null || libraryS == null)
+        if (inputS == null || libraryS == null ||  analyticS == null)
         {
             return;
         }
@@ -34,6 +35,7 @@ class Program
             Console.WriteLine("6. List of items");
             Console.WriteLine("7. List of active rentals");
             Console.WriteLine("8. List of users");
+            Console.WriteLine("9. Statistics");
             Console.WriteLine("0. Quit");
             Console.WriteLine("-----------------------------------------");
             Console.Write("\nChose: ");
@@ -50,6 +52,7 @@ class Program
                 case "6": ShowI(libraryS); break;
                 case "7": ShowR(libraryS); break;
                 case "8": ShowU(libraryS); break;
+                case "9": ShowStatistics(analyticS); break;
                 case "0":
                     Console.WriteLine("See ya later alligator!");
                     return;
@@ -58,6 +61,36 @@ class Program
                     Thread.Sleep(1000);
                     break;
             }
+        }
+    }
+
+    private static void ShowStatistics(IAnalyticService analyticS)
+    {
+        Console.WriteLine($"Total number of items: {analyticS.AllItemsCount()}");
+        Console.WriteLine($"Total number of users: {analyticS.AllUsersCount()}");
+        Console.WriteLine($"Total number of rentals: {analyticS.AllRentalsCount()}");
+        Console.WriteLine($"Active rentals: {analyticS.AllActiveRentalsCount()}");
+
+        var mostCommon = analyticS.MostCommonRental();
+        if (mostCommon != null)
+        {
+            Console.WriteLine("Most frequently rented item:");
+            mostCommon.DisplayInfo();
+        }
+        else
+        {
+            Console.WriteLine("Most frequently rented item: no rentals yet");
+        }
+
+        var mostActive = analyticS.MostActiveUser();
+        if (mostActive != null)
+        {
+            Console.WriteLine("Most active user:");
+            mostActive.DisplayInfo();
+        }
+        else
+        {
+            Console.WriteLine("Most active user: no active users");
         }
     }
 
@@ -156,5 +189,6 @@ class Program
     {
         services.AddSingleton<ILibraryService, LibraryService>();
         services.AddSingleton<IUserInputService, UserInputService>();
+        services.AddSingleton<IAnalyticService, AnalyticsService>();
     }
 }

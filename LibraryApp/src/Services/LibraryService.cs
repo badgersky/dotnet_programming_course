@@ -9,13 +9,11 @@ public class LibraryService : ILibraryService
     private readonly List<ItemRental> _itemRentals = [];
     private int _nextU;
     private int _nextI;
-    private int _nextR;
 
     public LibraryService()
     {
-        this._nextU = _nextU = 1;
-        this._nextI = _nextI = 1;
-        this._nextR = _nextR = 1;
+        _nextU = 1;
+        _nextI = 1;
     }
 
     public bool AddItem(string title, string author, string isbn = "", string format = "")
@@ -50,6 +48,7 @@ public class LibraryService : ILibraryService
             Console.WriteLine("Username already exists");
             return false;
         }
+        
         
         var user = new User(username, _nextU);
         _users.Add(user);
