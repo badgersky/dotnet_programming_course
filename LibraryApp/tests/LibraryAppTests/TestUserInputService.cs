@@ -4,7 +4,7 @@ namespace LibraryAppTests;
 
 public class UserInputServiceTests
 {
-    private UserInputService s;
+    private UserInputService _s;
     private TextWriter _originalOut;
     private TextReader _originalIn;
     private StringWriter _fakeOutput;
@@ -13,7 +13,7 @@ public class UserInputServiceTests
     [SetUp]
     public void Setup()
     {
-        s = new UserInputService();
+        _s = new UserInputService();
         _originalOut = Console.Out;
         _originalIn  = Console.In;
         _fakeOutput  = new StringWriter();
@@ -40,7 +40,7 @@ public class UserInputServiceTests
     public void TestReadString1()
     {
         SetInput("  ", "", "username");
-        var res = s.ReadString("Username: ");
+        var res = _s.ReadString("Username: ");
         Assert.That(res, Is.EqualTo("username"));
     }
     
@@ -48,7 +48,7 @@ public class UserInputServiceTests
     public void TestReadString2()
     {
         SetInput("  ", "", "  username  ");
-        var res = s.ReadString("Username: ");
+        var res = _s.ReadString("Username: ");
         Assert.That(res, Is.EqualTo("username"));
     }
     
@@ -56,7 +56,7 @@ public class UserInputServiceTests
     public void TestReadInt1()
     {
         SetInput(" ", "  ", "", "  12  ");
-        var res = s.ReadInt("Id: ");
+        var res = _s.ReadInt("Id: ");
         Assert.That(res, Is.EqualTo(12));
     }
     
@@ -64,7 +64,7 @@ public class UserInputServiceTests
     public void TestReadInt2()
     {
         SetInput("  ", "", " -12 ", " 2   ");
-        var res = s.ReadInt("Id: ");
+        var res = _s.ReadInt("Id: ");
         Assert.That(res, Is.EqualTo(2));
     }
     
@@ -72,7 +72,7 @@ public class UserInputServiceTests
     public void TestReadFormat1()
     {
         SetInput("  ", "", "  username  ", "pdf");
-        var res = s.ReadFormat("Format: ");
+        var res = _s.ReadFormat("Format: ");
         Assert.That(res, Is.EqualTo("pdf"));
     }
     
@@ -80,7 +80,7 @@ public class UserInputServiceTests
     public void TestReadFormat2()
     {
         SetInput("  ", "", "  username  ", " exe ", "jpg", "EPUB");
-        var res = s.ReadFormat("Format: ");
+        var res = _s.ReadFormat("Format: ");
         Assert.That(res, Is.EqualTo("epub"));
     }
     
@@ -88,7 +88,7 @@ public class UserInputServiceTests
     public void TestReadIsbn10()
     {
         SetInput("  0131872508  ");
-        var res = s.ReadIsbn("ISBN: ");
+        var res = _s.ReadIsbn("ISBN: ");
         Assert.That(res, Is.EqualTo("0131872508"));
     }
     
@@ -96,7 +96,7 @@ public class UserInputServiceTests
     public void TestReadIsbn13()
     {
         SetInput("  9780201616224  ");
-        var res = s.ReadIsbn("ISBN: ");
+        var res = _s.ReadIsbn("ISBN: ");
         Assert.That(res, Is.EqualTo("9780201616224"));
     }
 }

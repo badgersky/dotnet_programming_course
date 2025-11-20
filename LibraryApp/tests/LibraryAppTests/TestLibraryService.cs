@@ -4,18 +4,19 @@ namespace LibraryAppTests;
 
 public class TestLibraryService
 {
+    private ILibraryService _s;
+    
     [SetUp]
     public void Setup()
-    {
+    { 
+        _s = new LibraryService();
     }
 
     [Test]
     public void TestAddUser1()
     {
-        var s = new LibraryService();
-
-        s.AddUser("username");
-        var users = s.GetUsers();
+        _s.AddUser("username");
+        var users = _s.GetUsers();
 
         var enumerable = users.ToList();
         Assert.That(enumerable.Count(), Is.EqualTo(1));
@@ -26,11 +27,9 @@ public class TestLibraryService
     [Test]
     public void TestAddUser2()
     {
-        var s = new LibraryService();
-
-        s.AddUser("username");
-        s.AddUser("username");
-        var users = s.GetUsers();
+        _s.AddUser("username");
+        _s.AddUser("username");
+        var users = _s.GetUsers();
 
         var enumerable = users.ToList();
         Assert.That(enumerable.Count(), Is.EqualTo(1));
@@ -41,11 +40,9 @@ public class TestLibraryService
     [Test]
     public void TestAddUser3()
     {
-        var s = new LibraryService();
-
-        s.AddUser("username1");
-        s.AddUser("username2");
-        var users = s.GetUsers();
+        _s.AddUser("username1");
+        _s.AddUser("username2");
+        var users = _s.GetUsers();
 
         var enumerable = users.ToList();
         Assert.That(enumerable.Count(), Is.EqualTo(2));
@@ -57,10 +54,8 @@ public class TestLibraryService
     [Test]
     public void TestAddItem1()
     {
-        var s = new LibraryService();
-
-        s.AddItem("title", "author", "123");
-        var items =  s.GetItems();
+        _s.AddItem("title", "author", "123");
+        var items =  _s.GetItems();
         var enumerable = items.ToList();
         
         Assert.That(enumerable.Count(), Is.EqualTo(1));
@@ -70,11 +65,9 @@ public class TestLibraryService
     [Test]
     public void TestAddItem2()
     {
-        var s = new LibraryService();
-
-        s.AddItem("title", "author", "", "pdf");
-        s.AddItem("title", "author", "123", "pdf");
-        var items =  s.GetItems();
+        _s.AddItem("title", "author", "", "pdf");
+        _s.AddItem("title", "author", "123", "pdf");
+        var items =  _s.GetItems();
         var enumerable = items.ToList();
         
         Assert.That(enumerable.Count(), Is.EqualTo(1));
@@ -84,12 +77,10 @@ public class TestLibraryService
     [Test]
     public void TestAddItem3()
     {
-        var s = new LibraryService();
-
-        s.AddItem("title", "author", "", "pdf");
-        s.AddItem("title", "author", "123");
-        s.AddItem("title", "author", "321");
-        var items =  s.GetItems();
+        _s.AddItem("title", "author", "", "pdf");
+        _s.AddItem("title", "author", "123");
+        _s.AddItem("title", "author", "321");
+        var items =  _s.GetItems();
         var enumerable = items.ToList();
         
         Assert.That(enumerable.Count(), Is.EqualTo(3));
@@ -100,13 +91,11 @@ public class TestLibraryService
     [Test]
     public void TestAddRental1()
     {
-        var s = new LibraryService();
-
-        s.AddItem("title", "author", "", "pdf");
-        s.AddUser("username");
-        s.RentItem(1, 1);
-        var rentals = s.GetRentals();
-        var items =  s.GetItems();
+        _s.AddItem("title", "author", "", "pdf");
+        _s.AddUser("username");
+        _s.RentItem(1, 1);
+        var rentals = _s.GetRentals();
+        var items =  _s.GetItems();
         var enumerable1 = items.ToList();
         var enumerable2 = rentals.ToList();
         
@@ -117,13 +106,11 @@ public class TestLibraryService
     [Test]
     public void TestAddRental2()
     {
-        var s = new LibraryService();
-
-        s.AddItem("title", "author", "12323");
-        s.AddUser("username");
-        s.RentItem(1, 1);
-        var rentals = s.GetRentals();
-        var items =  s.GetItems();
+        _s.AddItem("title", "author", "12323");
+        _s.AddUser("username");
+        _s.RentItem(1, 1);
+        var rentals = _s.GetRentals();
+        var items =  _s.GetItems();
         var enumerable1 = items.ToList();
         var enumerable2 = rentals.ToList();
         
@@ -134,11 +121,9 @@ public class TestLibraryService
     [Test]
     public void TestAddRental3()
     {
-        var s = new LibraryService();
-        
-        s.AddUser("username");
-        s.RentItem(1, 1);
-        var rentals = s.GetRentals();
+        _s.AddUser("username");
+        _s.RentItem(1, 1);
+        var rentals = _s.GetRentals();
         var enumerable1 = rentals.ToList();
         
         Assert.That(enumerable1.Count(), Is.EqualTo(0));
@@ -147,14 +132,12 @@ public class TestLibraryService
     [Test]
     public void TestReturnItem()
     {
-        var s = new LibraryService();
-        
-        s.AddItem("title", "author", "12323");
-        s.AddUser("username");
-        s.RentItem(1, 1);
-        s.ReturnItem(1);
-        var items = s.GetItems();
-        var rentals = s.GetRentals();
+        _s.AddItem("title", "author", "12323");
+        _s.AddUser("username");
+        _s.RentItem(1, 1);
+        _s.ReturnItem(1);
+        var items = _s.GetItems();
+        var rentals = _s.GetRentals();
         var enumerable1 = rentals.ToList();
         var enumerable2 = items.ToList();
         
