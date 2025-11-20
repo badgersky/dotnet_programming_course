@@ -12,4 +12,5 @@ public abstract class Ship
     public int Capacity { get; set; }
     [Required]
     public int CrewCount { get; set; }
+    public List<TransportOrder>? TransportOrders { get; set; }
 }
