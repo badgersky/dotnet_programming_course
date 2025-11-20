@@ -11,4 +11,9 @@
       <PackageReference Include="NUnit" Version="4.4.0" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\Domain\Domain.csproj" />
+      <ProjectReference Include="..\Services\Services.csproj" />
+    </ItemGroup>
+
 </Project>
