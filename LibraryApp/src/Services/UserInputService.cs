@@ -2,6 +2,8 @@
 
 public class UserInputService : IUserInputService
 {
+    public event Action<string>? Notification;
+    
     public string ReadString(string prompt)
     {
         while (true)
@@ -14,7 +16,7 @@ public class UserInputService : IUserInputService
                 return input;
             }
             
-            Console.WriteLine("This cannot be empty!");
+            OnNotification("This cannot be empty!");
         }
     }
 
@@ -29,7 +31,7 @@ public class UserInputService : IUserInputService
                 return value;
             }
 
-            Console.WriteLine("Enter a positive number!");
+            OnNotification("Enter a positive number!");
         }
     }
 
@@ -46,7 +48,7 @@ public class UserInputService : IUserInputService
                 return input.ToLower();
             }
             
-            Console.WriteLine("That's not a valid format!");
+            OnNotification("That's not a valid format!");
         }
     }
 
@@ -61,7 +63,7 @@ public class UserInputService : IUserInputService
                 return input;
             }
             
-            Console.WriteLine("Invalid ISBN!");
+            OnNotification("Invalid ISBN!");
         }
     }
 
@@ -127,5 +129,11 @@ public class UserInputService : IUserInputService
         }
         
         return sum % 11 == checkDigit;
+    }
+
+
+    protected virtual void OnNotification(string s)
+    {
+        Notification?.Invoke(s);
     }
 }

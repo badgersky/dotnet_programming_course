@@ -130,8 +130,8 @@ public class LibraryService : ILibraryService
         return  _users;
     }
 
-    protected virtual void OnNotification(string e)
+    protected virtual void OnNotification(string s)
     {
-        Notification?.Invoke(e);
+        Notification?.Invoke(s);
     }
 }

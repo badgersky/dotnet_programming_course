@@ -19,7 +19,7 @@ class Program
         {
             Console.WriteLine("Something went terribly wrong.");
             Console.WriteLine("Exiting...");
-            Thread.Sleep(800);
+            Thread.Sleep(700);
             return;
             
         }
@@ -27,7 +27,13 @@ class Program
         libraryS.Notification += message =>
         {
             Console.WriteLine($"\n {message} \n");
-            Thread.Sleep(600);
+            Thread.Sleep(700);
+        };
+
+        inputS.Notification += message =>
+        {
+            Console.WriteLine($"\n {message} \n");
+            Thread.Sleep(700);
         };
         
         Console.WriteLine("------------------------------------");
@@ -108,7 +114,7 @@ class Program
     {
         var title = input.ReadString("Title: ");
         var author = input.ReadString("Author: ");
-        var format = input.ReadFormat("Format: ");
+        var format = input.ReadFormat("Format (pdf/epub/mobi): ");
         
         library.AddItem(title, author, "", format);
         Console.WriteLine("E-Book added");
@@ -127,6 +133,9 @@ class Program
         {
             user.DisplayInfo();
         }
+        
+        Console.WriteLine("Press any key to continue...");
+        Console.ReadKey();
     }
 
     private static void ShowR(ILibraryService library)
@@ -146,6 +155,8 @@ class Program
             }
         }
 
+        Console.WriteLine("Press any key to continue...");
+        Console.ReadKey();
     }
 
     private static void ShowI(ILibraryService library)
@@ -161,6 +172,9 @@ class Program
         {
             item.DisplayInfo();
         }
+        
+        Console.WriteLine("Press any key to continue...");
+        Console.ReadKey();
     }
 
     private static void ReturnI(ILibraryService library, IUserInputService input)

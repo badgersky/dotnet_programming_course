@@ -8,4 +8,5 @@ public interface IUserInputService
     string ReadIsbn(string prompt);
     bool IsValidIsbn13(string isbn);
     bool IsValidIsbn10(string isbn);
+    event Action<string>? Notification;
 }
