@@ -17,9 +17,19 @@ class Program
 
         if (inputS == null || libraryS == null ||  analyticS == null)
         {
+            Console.WriteLine("Something went terribly wrong.");
+            Console.WriteLine("Exiting...");
+            Thread.Sleep(800);
             return;
+            
         }
-
+        
+        libraryS.Notification += message =>
+        {
+            Console.WriteLine($"\n {message} \n");
+            Thread.Sleep(600);
+        };
+        
         Console.WriteLine("------------------------------------");
         Console.WriteLine("           L I B R A R Y");
         Console.WriteLine("------------------------------------");
@@ -179,7 +189,7 @@ class Program
     {
         var title =  input.ReadString("Title: ");
         var author = input.ReadString("Author: ");
-        var isbn  = input.ReadIsbn("Isbn: ");
+        var isbn  = input.ReadIsbn("Isbn (only digits): ");
         
         library.AddItem(title, author, isbn);
         Console.WriteLine("Book added");

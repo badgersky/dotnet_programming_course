@@ -9,7 +9,8 @@ public class LibraryService : ILibraryService
     private readonly List<ItemRental> _itemRentals = [];
     private int _nextU;
     private int _nextI;
-
+    public event Action<string>? Notification;
+    
     public LibraryService()
     {
         _nextU = 1;
@@ -37,22 +38,27 @@ public class LibraryService : ILibraryService
 
         if (item == null) return false;
         _items.Add(item);
+        OnNotification("item added");
         return true;
     }
 
     public bool AddUser(string username)
     {
-        if (string.IsNullOrEmpty(username)) return false;
+        if (string.IsNullOrEmpty(username))
+        {
+            OnNotification("username cannot be empty");
+            return false;
+        }
         if (_users.Any(u => u.Username == username))
         {
-            Console.WriteLine("Username already exists");
+            OnNotification("Username already exists");
             return false;
         }
         
         
         var user = new User(username, _nextU);
         _users.Add(user);
-        
+        OnNotification("User created");
         _nextU++;
         return true;
     }
@@ -62,20 +68,20 @@ public class LibraryService : ILibraryService
         var item = _items.FirstOrDefault(i => i.Id == itemId);
         if (item == null)
         {
-            Console.WriteLine($"Item with id {itemId} not found");
+            OnNotification($"Item with id {itemId} not found");
             return false;
         }
         
         var user =  _users.FirstOrDefault(u => u.Id == userId);
         if (user == null)
         {
-            Console.WriteLine($"User with id {userId} not found");
+            OnNotification($"User with id {userId} not found");
             return false;
         }
 
         if (!item.IsA)
         {
-            Console.WriteLine($"Item with id {itemId} is not available");
+            OnNotification($"Item with id {itemId} is not available");
             return false;
         }
 
@@ -83,6 +89,7 @@ public class LibraryService : ILibraryService
 
         var newRent = new ItemRental(item, user);
         _itemRentals.Add(newRent);
+        OnNotification("Item rented");
         return true;
     }
 
@@ -91,19 +98,20 @@ public class LibraryService : ILibraryService
         var item = _items.FirstOrDefault(i => i.Id == itemId);
         if (item == null)
         {
-            Console.WriteLine($"Item with id {itemId} not found");
+            OnNotification($"Item with id {itemId} not found");
             return false;
         }
         
         var rental = _itemRentals.FirstOrDefault(r => r.Item.Id == itemId);
         if (rental == null)
         {
-            Console.WriteLine($"Rental with id {itemId} not found");
+            OnNotification($"Rental with id {itemId} not found");
             return false;
         }
         
         rental.Returned = true;
         item.IsA = true;
+        OnNotification("Item returned");
         return true;
     }
 
@@ -120,5 +128,10 @@ public class LibraryService : ILibraryService
     public IEnumerable<User> GetUsers()
     {
         return  _users;
+    }
+
+    protected virtual void OnNotification(string e)
+    {
+        Notification?.Invoke(e);
     }
 }

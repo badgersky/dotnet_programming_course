@@ -11,4 +11,5 @@ public interface ILibraryService
     IEnumerable<LibraryItem> GetItems();
     IEnumerable<ItemRental> GetRentals();
     IEnumerable<User> GetUsers();
+    event Action<string>? Notification;
 }
