@@ -84,7 +84,7 @@ public class ShipService : IShipService
         }
         else
         {
-            throw new InvalidOperationException("Type mismatch between existing ship and update object");
+            return false;
         }
 
         var i = await _db.SaveChangesAsync();
