@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpaceFleetAPI", "SpaceFleetAPI.csproj", "{C4CE105F-3BD3-4B5F-833B-EC70EAFD25DE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{49E40AEA-0566-4858-A4BB-A46A617163E2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{C4CE105F-3BD3-4B5F-833B-EC70EAFD25DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C4CE105F-3BD3-4B5F-833B-EC70EAFD25DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C4CE105F-3BD3-4B5F-833B-EC70EAFD25DE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{49E40AEA-0566-4858-A4BB-A46A617163E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{49E40AEA-0566-4858-A4BB-A46A617163E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{49E40AEA-0566-4858-A4BB-A46A617163E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{49E40AEA-0566-4858-A4BB-A46A617163E2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
