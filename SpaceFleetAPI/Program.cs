@@ -13,6 +13,8 @@ builder.Services.AddScoped<IShipService,  ShipService>();
 builder.Services.AddScoped<IDestinationService,  DestinationService>();
 builder.Services.AddScoped<IOrderService,  OrderService>();
 
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 builder.Services.AddOpenApi();
 
 var app = builder.Build();
@@ -25,7 +27,8 @@ using (var scope = app.Services.CreateScope())
 
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();
