@@ -1,9 +1,17 @@
 using Microsoft.EntityFrameworkCore;
 using SpaceFleetAPI.Data;
+using SpaceFleetAPI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<SpaceFleetDbContext>(options => options.UseSqlite("Data Source=SpaceFleetDB.db"));
+
+builder.Services.AddControllers();
+
+builder.Services.AddScoped<IPilotService,  PilotService>();
+builder.Services.AddScoped<IShipService,  ShipService>();
+builder.Services.AddScoped<IDestinationService,  DestinationService>();
+builder.Services.AddScoped<IOrderService,  OrderService>();
 
 builder.Services.AddOpenApi();
 
@@ -21,5 +29,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.MapControllers();
 
 app.Run();

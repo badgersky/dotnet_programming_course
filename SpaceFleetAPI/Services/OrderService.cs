@@ -48,15 +48,14 @@ public class OrderService : IOrderService
             return false;
 
         if (await _db.Destinations.AnyAsync(x => x.Id == uOrder.DestinationId))
-            order.Destination = uOrder.Destination;
+            order.DestinationId = uOrder.DestinationId;
         if (await _db.Pilots.AnyAsync(x => x.Id == uOrder.PilotId))
-            order.Pilot = uOrder.Pilot;
+            order.PilotId = uOrder.PilotId;
         if (await _db.Ships.AnyAsync(x => x.Id == uOrder.ShipId))
-            order.Ship = uOrder.Ship;
+            order.ShipId = uOrder.ShipId;
                 
         order.Finished = uOrder.Finished;
-        
-        // to do - finsih
-        // var 
+        var i = await _db.SaveChangesAsync();
+        return i > 0;
     }
 }
