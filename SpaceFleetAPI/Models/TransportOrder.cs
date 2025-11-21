@@ -17,8 +17,8 @@ public class TransportOrder
     public Pilot? Pilot { get; set; }
     [Required]
     public required int DestinationId { get; set; }
-    [ForeignKey("DestId")]
+    [ForeignKey("DestinationId")]
     public Destination? Destination { get; set; }
     [Required]
-    public bool Finished { get; set; } = false;
+    public bool Finished { get; set; }
 }

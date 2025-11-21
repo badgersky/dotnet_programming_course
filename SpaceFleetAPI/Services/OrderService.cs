@@ -58,4 +58,18 @@ public class OrderService : IOrderService
         var i = await _db.SaveChangesAsync();
         return i > 0;
     }
+    
+    public async Task<bool> CompleteOrder(int id)
+    {
+        var order = await _db.TransportOrders.FindAsync(id);
+        if (order == null) 
+            return false;
+
+        if (order.Finished) 
+            return false;
+
+        order.Finished = true;
+        var i = await _db.SaveChangesAsync();
+        return i > 0;
+    }
 }

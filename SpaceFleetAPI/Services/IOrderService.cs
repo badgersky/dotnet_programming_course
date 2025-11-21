@@ -9,4 +9,5 @@ public interface IOrderService
     public Task<List<TransportOrder>> ReadAll();
     public Task<bool> Delete(int id);
     public Task<bool> Update(int id, TransportOrder uOrder);
+    public Task<bool> CompleteOrder(int id);
 }
