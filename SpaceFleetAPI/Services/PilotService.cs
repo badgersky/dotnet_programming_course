@@ -16,9 +16,9 @@ public class PilotService : IPilotService
 
     public async Task<bool> Create(Pilot pilot)
     {
-        _db.Add(pilot);
-        await _db.SaveChangesAsync();
-        return true;
+        _db.Pilots.Add(pilot);
+        var i = await _db.SaveChangesAsync();
+        return i > 0;
     }
 
     public async Task<Pilot?> ReadOne(int id)
@@ -37,9 +37,9 @@ public class PilotService : IPilotService
         if (pilot == null)
             return false;
         
-        _db.Remove(pilot);
-        await _db.SaveChangesAsync();
-        return true;
+        _db.Pilots.Remove(pilot);
+        var i = await _db.SaveChangesAsync();
+        return i > 0;
     }
 
     public async Task<bool> Update(int id, Pilot uPilot)
@@ -49,7 +49,7 @@ public class PilotService : IPilotService
             return false;
         
         pilot.Name = uPilot.Name;
-        await _db.SaveChangesAsync();
-        return true;
+        var i = await _db.SaveChangesAsync();
+        return i > 0;
     }
 }

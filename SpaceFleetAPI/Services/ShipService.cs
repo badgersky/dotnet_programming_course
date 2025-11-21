@@ -31,8 +31,8 @@ public class ShipService : IShipService
         }
         
         _db.Ships.Add(ship);
-        await _db.SaveChangesAsync();
-        return true;
+        var i = await _db.SaveChangesAsync();
+        return i > 0;
     }
 
     public async Task<Ship?> ReadOne(int id)
@@ -52,8 +52,8 @@ public class ShipService : IShipService
             return false;
         
         _db.Ships.Remove(ship);
-        await _db.SaveChangesAsync();
-        return true;
+        var i = await _db.SaveChangesAsync();
+        return i > 0;
     }
 
     public async Task<bool> Update(int id, Ship uShip)
@@ -87,7 +87,7 @@ public class ShipService : IShipService
             throw new InvalidOperationException("Type mismatch between existing ship and update object");
         }
 
-        await _db.SaveChangesAsync();
-        return true;
+        var i = await _db.SaveChangesAsync();
+        return i > 0;
     }
 }
