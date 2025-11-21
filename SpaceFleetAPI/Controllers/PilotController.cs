@@ -29,6 +29,7 @@ public class PilotController : ControllerBase
         var pilot = await _s.ReadOne(id);
         if  (pilot == null)
             return NotFound();
+        
         return Ok(pilot);
     }
 
@@ -37,9 +38,7 @@ public class PilotController : ControllerBase
     {
         var ok = await _s.Create(pilot);
         if (!ok)
-        {
             return BadRequest("Could not create pilot");
-        }
         
         return CreatedAtAction(nameof(GetOne), new { id = pilot.Id }, pilot);
     }

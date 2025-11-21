@@ -32,11 +32,11 @@ public class DestinationService : IDestinationService
 
     public async Task<bool> Delete(int id)
     {
-        var ship = await _db.Ships.FindAsync(id);
-        if (ship == null) 
+        var dest = await _db.Destinations.FindAsync(id);
+        if (dest == null) 
             return false;
         
-        _db.Ships.Remove(ship);
+        _db.Destinations.Remove(dest);
         var i = await _db.SaveChangesAsync();
         return i > 0;    
     }

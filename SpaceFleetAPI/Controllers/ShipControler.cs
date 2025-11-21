@@ -28,6 +28,7 @@ public class ShipController : ControllerBase
         var ship = await _s.ReadOne(id);
         if (ship == null)
             return NotFound();
+        
         return Ok(ship);
     }
 
@@ -35,7 +36,8 @@ public class ShipController : ControllerBase
     public async Task<IActionResult> PostLocal([FromBody] LocalSystemShip ship)
     {
         var ok = await _s.Create(ship);
-        if (!ok) return BadRequest("Could not create local ship");
+        if (!ok) 
+            return BadRequest("Could not create local ship");
 
         return CreatedAtAction(nameof(GetOne), new { id = ship.Id }, ship);
     }
@@ -44,7 +46,8 @@ public class ShipController : ControllerBase
     public async Task<IActionResult> PostRemote([FromBody] RemoteSystemShip ship)
     {
         var ok = await _s.Create(ship);
-        if (!ok) return BadRequest("Could not create remote ship");
+        if (!ok) 
+            return BadRequest("Could not create remote ship");
 
         return CreatedAtAction(nameof(GetOne), new { id = ship.Id }, ship);
     }
