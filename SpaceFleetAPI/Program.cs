@@ -15,6 +15,7 @@ builder.Services.AddScoped<IDestinationService,  DestinationService>();
 builder.Services.AddScoped<IOrderService,  OrderService>();
 
 builder.Services.AddScoped<ShipEventLogger>();
+builder.Services.AddScoped<PilotEventLogger>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -28,6 +29,7 @@ using (var scope = app.Services.CreateScope())
     db.Database.EnsureCreated();
     
     var shipLogger = scope.ServiceProvider.GetRequiredService<ShipEventLogger>();
+    var pilotLogger = scope.ServiceProvider.GetRequiredService<PilotEventLogger>();
 }
 
 if (app.Environment.IsDevelopment())
