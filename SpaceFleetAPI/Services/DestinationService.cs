@@ -15,6 +15,16 @@ public class DestinationService : IDestinationService
 
     public async Task<bool> Create(Destination dest)
     {
+        var exists = await _db.Destinations.AnyAsync(p => p.Id == dest.Id);
+        if (exists)
+            return false;
+        
+        if (string.IsNullOrEmpty(dest.Name))
+            return false;
+        
+        if (dest.Name.Length > 50)
+            return false;
+        
         _db.Destinations.Add(dest);
         var i = await _db.SaveChangesAsync();
         return i > 0;
