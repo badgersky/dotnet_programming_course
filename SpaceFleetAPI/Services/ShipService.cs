@@ -15,8 +15,14 @@ public class ShipService : IShipService
 
     public async Task<bool> Create(Ship ship)
     {
+        var exists = await _db.Ships.AnyAsync(p => p.Id == ship.Id);
+        if (exists)
+            return false;
+        
         if (ship.Capacity < 0) return false;
         if (ship.CrewCount < 0) return false;
+        
+        if (string.IsNullOrEmpty(ship.Model) || ship.Model.Length > 50) return false;
         
         if (ship is LocalSystemShip localShip)
         {
@@ -62,9 +68,7 @@ public class ShipService : IShipService
         if (ship == null)
             return false;
         
-        ship.Model = uShip.Model;
-        ship.Capacity = uShip.Capacity;
-        ship.CrewCount = uShip.CrewCount;
+        if (string.IsNullOrEmpty(ship.Model) || ship.Model.Length > 50) return false;
         
         if (ship is LocalSystemShip localShip && uShip is LocalSystemShip usLocal)
         {
@@ -86,6 +90,10 @@ public class ShipService : IShipService
         {
             return false;
         }
+        
+        ship.Model = uShip.Model;
+        ship.Capacity = uShip.Capacity;
+        ship.CrewCount = uShip.CrewCount;
 
         var i = await _db.SaveChangesAsync();
         return i > 0;
