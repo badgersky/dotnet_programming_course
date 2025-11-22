@@ -65,22 +65,19 @@ public class OrderService : IOrderService
         if (order == null)
             return false;
         
-        if (!await _db.TransportOrders.AnyAsync(p => p.Id == order.Id))
+        if (!await _db.Ships.AnyAsync(p => p.Id == uOrder.ShipId))
             return false;
         
-        if (!await _db.Ships.AnyAsync(p => p.Id == order.ShipId))
+        if (!await _db.Pilots.AnyAsync(p => p.Id == uOrder.PilotId))
             return false;
         
-        if (!await _db.Pilots.AnyAsync(p => p.Id == order.PilotId))
-            return false;
-        
-        if (!await _db.Destinations.AnyAsync(p => p.Id == order.DestinationId))
+        if (!await _db.Destinations.AnyAsync(p => p.Id == uOrder.DestinationId))
             return false;
 
-        if (await _db.TransportOrders.AnyAsync(p => p.PilotId == order.PilotId && !p.Finished && p.Id != id))
+        if (await _db.TransportOrders.AnyAsync(p => p.PilotId == uOrder.PilotId && !p.Finished && p.Id != id))
             return false;
         
-        if (await _db.TransportOrders.AnyAsync(p => p.ShipId == order.ShipId && !p.Finished &&  p.Id != id))
+        if (await _db.TransportOrders.AnyAsync(p => p.ShipId == uOrder.ShipId && !p.Finished &&  p.Id != id))
             return false;
         
         order.DestinationId = uOrder.DestinationId;

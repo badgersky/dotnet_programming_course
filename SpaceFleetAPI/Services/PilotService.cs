@@ -12,8 +12,7 @@ public class PilotService : IPilotService
     {
         _db = db;
     }
-
-
+    
     public async Task<bool> Create(Pilot pilot)
     {
         var exists = await _db.Pilots.AnyAsync(p => p.Id == pilot.Id);

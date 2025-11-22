@@ -25,7 +25,7 @@ namespace SpaceFleetAPI.Tests
             {
                 new Pilot { Id = 1, Name = "Mietek" },
                 new Pilot { Id = 2, Name = "Magda" },
-                new Pilot { Id = 3, Name = "Marie" },
+                new Pilot { Id = 3, Name = "Maria" },
                 new Pilot { Id = 4, Name = "Maciej" }
             };
             _db.Pilots.AddRange(pilots);
@@ -136,9 +136,9 @@ namespace SpaceFleetAPI.Tests
         {
             var orders = new List<TransportOrder>
             {
-                new TransportOrder { ShipId = 1, PilotId = 2, DestinationId = 1 },
-                new TransportOrder { ShipId = 2, PilotId = 4, DestinationId = 2 },
-                new TransportOrder { ShipId = 3, PilotId = 1, DestinationId = 3 }
+                new TransportOrder { Id = 1, ShipId = 1, PilotId = 2, DestinationId = 1 },
+                new TransportOrder { Id = 2, ShipId = 2, PilotId = 4, DestinationId = 2 },
+                new TransportOrder { Id = 3, ShipId = 3, PilotId = 1, DestinationId = 3 }
             };
             await _db?.TransportOrders.AddRangeAsync(orders)!;
             await _db.SaveChangesAsync();
@@ -148,23 +148,125 @@ namespace SpaceFleetAPI.Tests
             Assert.That(orders2, Is.Not.Null);
             Assert.That(orders2.Count, Is.EqualTo(3));
         }
-
+        
         [Test]
-        public async Task TestUpdateOrder()
+        public async Task TestUpdateOrder1()
         {
-            // Tu później test Update
+            var order1 = new TransportOrder { ShipId = 1, PilotId = 2, DestinationId = 1 };
+            var result1 = await _s?.Create(order1)!;
+            
+            var order2 = new TransportOrder { ShipId = 1, PilotId = 3, DestinationId = 1 };
+            var result2 = await _s?.Update(1, order2)!;
+        
+            var order3 = await _s?.ReadOne(1)!;
+            
+            Assert.That(result1, Is.True);
+            Assert.That(result2, Is.True);
+            Assert.That(order3, Is.Not.Null);
+            Assert.That(order3?.Pilot?.Name, Is.EqualTo("Maria"));
         }
 
+        [Test]
+        public async Task TestUpdateOrder2()
+        {
+            var orders = new List<TransportOrder>
+            {
+                new TransportOrder { Id = 1, ShipId = 1, PilotId = 2, DestinationId = 1, Finished = false},
+                new TransportOrder { Id = 2, ShipId = 2, PilotId = 4, DestinationId = 2, Finished = false },
+                new TransportOrder { Id = 3, ShipId = 3, PilotId = 1, DestinationId = 3, Finished = false }
+            };
+            await _db?.TransportOrders.AddRangeAsync(orders)!;
+            await _db.SaveChangesAsync();
+            
+            var order1 = new TransportOrder { ShipId = 1, PilotId = 4, DestinationId = 1 };
+            var result1 = await _s?.Update(1, order1)!;
+        
+            var order2 = await _s?.ReadOne(1)!;
+            
+            Assert.That(order2, Is.Not.Null);
+            Assert.That(order2?.Pilot?.Name, Is.EqualTo("Magda"));
+        }
+        
+        [Test]
+        public async Task TestUpdateOrder3()
+        {
+            var orders = new List<TransportOrder>
+            {
+                new TransportOrder { Id = 1, ShipId = 1, PilotId = 2, DestinationId = 1, Finished = false},
+                new TransportOrder { Id = 2, ShipId = 2, PilotId = 4, DestinationId = 2, Finished = true },
+                new TransportOrder { Id = 3, ShipId = 3, PilotId = 1, DestinationId = 3, Finished = false }
+            };
+            await _db?.TransportOrders.AddRangeAsync(orders)!;
+            await _db.SaveChangesAsync();
+            
+            var order1 = new TransportOrder { ShipId = 1, PilotId = 4, DestinationId = 1 };
+            var result1 = await _s?.Update(1, order1)!;
+        
+            var order2 = await _s?.ReadOne(1)!;
+            
+            Assert.That(result1, Is.True);
+            Assert.That(order2, Is.Not.Null);
+            Assert.That(order2?.Pilot?.Name, Is.EqualTo("Maciej"));
+        }
+        
         [Test]
         public async Task TestDeleteOrder()
         {
-            // Tu później test Delete
+            var orders = new List<TransportOrder>
+            {
+                new TransportOrder { Id = 1, ShipId = 1, PilotId = 2, DestinationId = 1, Finished = false},
+                new TransportOrder { Id = 2, ShipId = 2, PilotId = 4, DestinationId = 2, Finished = true },
+                new TransportOrder { Id = 3, ShipId = 3, PilotId = 1, DestinationId = 3, Finished = false }
+            };
+            await _db?.TransportOrders.AddRangeAsync(orders)!;
+            await _db.SaveChangesAsync();
+
+            var result = await _s?.Delete(1)!;
+            orders = await _s.ReadAll();
+            
+            Assert.That(result, Is.True);
+            Assert.That(orders, Is.Not.Null);
+            Assert.That(orders.Count, Is.EqualTo(2));
         }
 
         [Test]
-        public async Task TestCompleteOrder()
+        public async Task TestCompleteOrder1()
         {
-            // Tu później test CompleteOrder
+            var orders = new List<TransportOrder>
+            {
+                new TransportOrder { Id = 1, ShipId = 1, PilotId = 2, DestinationId = 1, Finished = false},
+                new TransportOrder { Id = 2, ShipId = 2, PilotId = 4, DestinationId = 2, Finished = false },
+                new TransportOrder { Id = 3, ShipId = 3, PilotId = 1, DestinationId = 3, Finished = false }
+            };
+            await _db?.TransportOrders.AddRangeAsync(orders)!;
+            await _db.SaveChangesAsync();
+
+            var result = await _s?.CompleteOrder(1)!;
+            var order = await _s?.ReadOne(1)!;
+            
+            Assert.That(order, Is.Not.Null);
+            Assert.That(result, Is.True);
+            Assert.That(order?.Finished, Is.True);
+        }
+        
+        [Test]
+        public async Task TestCompleteOrder2()
+        {
+            var orders = new List<TransportOrder>
+            {
+                new TransportOrder { Id = 1, ShipId = 1, PilotId = 2, DestinationId = 1, Finished = true},
+                new TransportOrder { Id = 2, ShipId = 2, PilotId = 4, DestinationId = 2, Finished = false },
+                new TransportOrder { Id = 3, ShipId = 3, PilotId = 1, DestinationId = 3, Finished = false }
+            };
+            await _db?.TransportOrders.AddRangeAsync(orders)!;
+            await _db.SaveChangesAsync();
+
+            var result = await _s?.CompleteOrder(1)!;
+            var order = await _s?.ReadOne(1)!;
+            
+            Assert.That(order, Is.Not.Null);
+            Assert.That(result, Is.False);
+            Assert.That(order?.Finished, Is.True);
         }
     }
 }
