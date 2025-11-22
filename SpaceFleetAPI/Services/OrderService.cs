@@ -15,6 +15,24 @@ public class OrderService : IOrderService
 
     public async Task<bool> Create(TransportOrder order)
     {
+        if (await _db.TransportOrders.AnyAsync(p => p.Id == order.Id))
+            return false;
+        
+        if (!await _db.Ships.AnyAsync(p => p.Id == order.ShipId))
+            return false;
+        
+        if (!await _db.Pilots.AnyAsync(p => p.Id == order.PilotId))
+            return false;
+        
+        if (!await _db.Destinations.AnyAsync(p => p.Id == order.DestinationId))
+            return false;
+        
+        if (await _db.TransportOrders.AnyAsync(p => p.PilotId == order.PilotId && !p.Finished))
+            return false;
+        
+        if (await _db.TransportOrders.AnyAsync(p => p.ShipId == order.ShipId && !p.Finished))
+            return false;
+        
         _db.TransportOrders.Add(order);
         var i = await _db.SaveChangesAsync();
         return i > 0;
@@ -46,13 +64,28 @@ public class OrderService : IOrderService
         var order = await _db.TransportOrders.FindAsync(id);
         if (order == null)
             return false;
+        
+        if (!await _db.TransportOrders.AnyAsync(p => p.Id == order.Id))
+            return false;
+        
+        if (!await _db.Ships.AnyAsync(p => p.Id == order.ShipId))
+            return false;
+        
+        if (!await _db.Pilots.AnyAsync(p => p.Id == order.PilotId))
+            return false;
+        
+        if (!await _db.Destinations.AnyAsync(p => p.Id == order.DestinationId))
+            return false;
 
-        if (await _db.Destinations.AnyAsync(x => x.Id == uOrder.DestinationId))
-            order.DestinationId = uOrder.DestinationId;
-        if (await _db.Pilots.AnyAsync(x => x.Id == uOrder.PilotId))
-            order.PilotId = uOrder.PilotId;
-        if (await _db.Ships.AnyAsync(x => x.Id == uOrder.ShipId))
-            order.ShipId = uOrder.ShipId;
+        if (await _db.TransportOrders.AnyAsync(p => p.PilotId == order.PilotId && !p.Finished && p.Id != id))
+            return false;
+        
+        if (await _db.TransportOrders.AnyAsync(p => p.ShipId == order.ShipId && !p.Finished &&  p.Id != id))
+            return false;
+        
+        order.DestinationId = uOrder.DestinationId;
+        order.PilotId = uOrder.PilotId;
+        order.ShipId = uOrder.ShipId;
                 
         order.Finished = uOrder.Finished;
         var i = await _db.SaveChangesAsync();

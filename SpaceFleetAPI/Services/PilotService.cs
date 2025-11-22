@@ -51,6 +51,9 @@ public class PilotService : IPilotService
 
     public async Task<bool> Update(int id, Pilot uPilot)
     {
+        if (string.IsNullOrEmpty(uPilot.Name)) 
+            return false;
+        
         var pilot = await _db.Pilots.FindAsync(id);
         if (pilot == null)
             return false;
