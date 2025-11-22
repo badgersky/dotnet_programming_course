@@ -8,6 +8,10 @@ public class PilotService : IPilotService
 {
     private readonly SpaceFleetDbContext _db;
 
+    public event EventHandler<Pilot>? PilotCreated;
+    public event EventHandler<Pilot>? PilotUpdated;
+    public event EventHandler<Pilot>? PilotDeleted;
+    
     public PilotService(SpaceFleetDbContext db)
     {
         _db = db;
@@ -27,7 +31,13 @@ public class PilotService : IPilotService
         
         _db.Pilots.Add(pilot);
         var i = await _db.SaveChangesAsync();
-        return i > 0;
+        if (i > 0)
+        {
+            PilotCreated?.Invoke(this, pilot);
+            return true;
+        }
+        
+        return false;
     }
 
     public async Task<Pilot?> ReadOne(int id)
@@ -48,7 +58,13 @@ public class PilotService : IPilotService
         
         _db.Pilots.Remove(pilot);
         var i = await _db.SaveChangesAsync();
-        return i > 0;
+        if (i > 0)
+        {
+            PilotDeleted?.Invoke(this, pilot);
+            return true;
+        }
+        
+        return false;
     }
 
     public async Task<bool> Update(int id, Pilot uPilot)
@@ -65,6 +81,12 @@ public class PilotService : IPilotService
         
         pilot.Name = uPilot.Name;
         var i = await _db.SaveChangesAsync();
-        return i > 0;
+        if (i > 0)
+        {
+            PilotUpdated?.Invoke(this, pilot);
+            return true;
+        }
+        
+        return false;
     }
 }
