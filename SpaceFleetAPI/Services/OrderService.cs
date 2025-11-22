@@ -7,11 +7,6 @@ namespace SpaceFleetAPI.Services;
 public class OrderService : IOrderService
 {
     private readonly SpaceFleetDbContext _db;
-
-    public event EventHandler<TransportOrder>? OrderCreated;
-    public event EventHandler<TransportOrder>? OrderUpdated;
-    public event EventHandler<TransportOrder>? OrderDeleted;
-    public event EventHandler<TransportOrder>? OrderCompleted;
     
     public OrderService(SpaceFleetDbContext db)
     {
@@ -40,13 +35,7 @@ public class OrderService : IOrderService
         
         _db.TransportOrders.Add(order);
         var i = await _db.SaveChangesAsync();
-        if (i > 0)
-        {
-            OrderCreated?.Invoke(this, order);
-            return true;
-        }
-        
-        return false;
+        return i > 0;
     }
 
     public async Task<TransportOrder?> ReadOne(int id)
@@ -67,13 +56,7 @@ public class OrderService : IOrderService
         
         _db.TransportOrders.Remove(order);
         var i = await _db.SaveChangesAsync();
-        if (i > 0)
-        {
-            OrderDeleted?.Invoke(this, order);
-            return true;
-        }
-        
-        return false;
+        return i > 0;
     }
 
     public async Task<bool> Update(int id, TransportOrder uOrder)
@@ -103,13 +86,7 @@ public class OrderService : IOrderService
                 
         order.Finished = uOrder.Finished;
         var i = await _db.SaveChangesAsync();
-        if (i > 0)
-        {
-            OrderUpdated?.Invoke(this, order);
-            return true;
-        }
-        
-        return false;
+        return i > 0;
     }
     
     public async Task<bool> CompleteOrder(int id)
@@ -123,12 +100,6 @@ public class OrderService : IOrderService
 
         order.Finished = true;
         var i = await _db.SaveChangesAsync();
-        if (i > 0)
-        {
-            OrderCompleted?.Invoke(this, order);
-            return true;
-        }
-        
-        return false;
+        return i > 0;
     }
 }

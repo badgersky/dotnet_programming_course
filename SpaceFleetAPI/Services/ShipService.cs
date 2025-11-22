@@ -7,10 +7,6 @@ namespace SpaceFleetAPI.Services;
 public class ShipService : IShipService
 {
     private readonly SpaceFleetDbContext _db;
-
-    public event EventHandler<Ship>? ShipCreated;
-    public event EventHandler<Ship>? ShipUpdated;
-    public event EventHandler<Ship>? ShipDeleted;
     
     public ShipService(SpaceFleetDbContext db)
     {
@@ -42,13 +38,7 @@ public class ShipService : IShipService
         
         _db.Ships.Add(ship);
         var i = await _db.SaveChangesAsync();
-
-        if (i > 0)
-        {
-            ShipCreated?.Invoke(this, ship);
-            return true;
-        }
-        return false;
+        return i > 0;
     }
 
     public async Task<Ship?> ReadOne(int id)
@@ -69,12 +59,7 @@ public class ShipService : IShipService
         
         _db.Ships.Remove(ship);
         var i = await _db.SaveChangesAsync();
-        if (i > 0)
-        {
-            ShipDeleted?.Invoke(this, ship);
-            return true;
-        }
-        return false;
+        return i > 0;
     }
 
     public async Task<bool> Update(int id, Ship uShip)
@@ -111,11 +96,6 @@ public class ShipService : IShipService
         ship.CrewCount = uShip.CrewCount;
 
         var i = await _db.SaveChangesAsync();
-        if (i > 0)
-        {
-            ShipUpdated?.Invoke(this, ship);
-            return true;
-        }
-        return false;
+        return i > 0;
     }
 }
