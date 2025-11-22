@@ -33,7 +33,7 @@ public class ShipService : IShipService
         if (ship is RemoteSystemShip remoteShip)
         {
             if (remoteShip.RemoteSpeed < 10)  return false;
-            if (!remoteShip.HibernationChamber && remoteShip.RemoteSpeed < 1000) return false;
+            if (!remoteShip.HibernationChamber && remoteShip.RemoteSpeed > 1000) return false;
         }
         
         _db.Ships.Add(ship);
