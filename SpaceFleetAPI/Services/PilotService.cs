@@ -16,6 +16,13 @@ public class PilotService : IPilotService
 
     public async Task<bool> Create(Pilot pilot)
     {
+        var exists = await _db.Pilots.AnyAsync(p => p.Id == pilot.Id);
+        if (exists)
+            return false;
+        
+        if (string.IsNullOrEmpty(pilot.Name))
+            return false;
+        
         _db.Pilots.Add(pilot);
         var i = await _db.SaveChangesAsync();
         return i > 0;

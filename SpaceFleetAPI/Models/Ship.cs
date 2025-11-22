@@ -6,7 +6,7 @@ public abstract class Ship
 {
     [Key]
     public int Id { get; set; }
-    [Required] 
+    [Required, MaxLength(50)] 
     public required string Model { get; set; } = "";
     [Required]
     public int Capacity { get; set; }

@@ -6,7 +6,7 @@ public class Pilot
 {
     [Key]
     public int Id { get; set; }
-    [Required]
+    [Required, MaxLength(100)]
     public required string Name { get; set; }
     public List<TransportOrder>? TransportOrders { get; set; }
 }

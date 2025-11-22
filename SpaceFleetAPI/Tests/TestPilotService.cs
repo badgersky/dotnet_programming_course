@@ -25,15 +25,15 @@ public class PilotServiceTests
     [TearDown]
     public void TearDown()
     {
-        _db.Database.EnsureDeleted();
-        _db.Dispose();
+        _db?.Database.EnsureDeleted();
+        _db?.Dispose();
     }
 
     [Test]
     public async Task TestCreatePilot1()
     {
         var pilot = new Pilot { Name = "Jerry" };
-        var result = await _s.Create(pilot);
+        var result = await _s?.Create(pilot)!;
         var pilots = await _s.ReadAll();
 
         Assert.That(pilots, Is.Not.Null);
@@ -42,10 +42,35 @@ public class PilotServiceTests
     }
     
     [Test]
+    public async Task TestCreatePilot2()
+    {
+        var pilot = new Pilot { Name = "" };
+        var result = await _s?.Create(pilot)!;
+        var pilots = await _s.ReadAll();
+        
+        Assert.That(pilots.Count, Is.EqualTo(0));
+        Assert.That(result, Is.False);
+    }
+    
+    [Test]
+    public async Task TestCreatePilot3()
+    {
+        var pilot =  new Pilot { Id = 1, Name = "Jerry" };
+        await _s.Create(pilot);
+        
+        pilot = new Pilot { Id = 1, Name = "Jane" };
+        var result = await _s?.Create(pilot)!;
+        var pilots = await _s.ReadAll();
+        
+        Assert.That(pilots.Count, Is.EqualTo(1));
+        Assert.That(result, Is.False);
+    }
+    
+    [Test]
     public async Task TestDeletePilot()
     {
         var pilot = new Pilot { Name = "Jerry" };
-        var result1 = await _s.Create(pilot);
+        var result1 = await _s?.Create(pilot)!;
         var pilots1 = await _s.ReadAll();
 
         var result2 = await _s.Delete(pilot.Id);
@@ -63,7 +88,7 @@ public class PilotServiceTests
     public async Task TestReadOnePilot()
     {
         var pilot = new Pilot { Name = "Jerry" };
-        var result1 = await _s.Create(pilot);
+        var result1 = await _s?.Create(pilot)!;
         
         pilot = new Pilot { Name = "Jane" };
         var result2 =  await _s.Create(pilot);
@@ -80,7 +105,7 @@ public class PilotServiceTests
     public async Task TestUpdatePilot()
     {
         var pilot = new Pilot { Name = "Jerry" };
-        var result1 = await _s.Create(pilot);
+        var result1 = await _s?.Create(pilot)!;
         
         var uPilot = new Pilot { Name = "Jane" };
         var result2 =  await _s.Update(pilot.Id, uPilot);
