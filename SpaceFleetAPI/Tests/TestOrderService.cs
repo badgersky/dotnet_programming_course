@@ -104,17 +104,49 @@ namespace SpaceFleetAPI.Tests
             Assert.That(orders2.Count, Is.EqualTo(1));
             Assert.That(result2, Is.False);
         }
+        
+        [Test]
+        public async Task TestCreateOrder4()
+        {
+            var order = new TransportOrder { ShipId = 10, PilotId = 10, DestinationId = 10 };
+            var result = await _s?.Create(order)!;
+            var orders = await _s.ReadAll();
+            
+            Assert.That(orders, Is.Not.Null);
+            Assert.That(orders.Count, Is.EqualTo(0));
+            Assert.That(result, Is.False);
+        }
 
         [Test]
         public async Task TestReadOneOrder()
         {
-            // Tu później test ReadOne
+            var order = new TransportOrder { ShipId = 1, PilotId = 2, DestinationId = 1 };
+            var result = await _s?.Create(order)!;
+            var order2 = await _s?.ReadOne(1)!;
+            
+            
+            Assert.That(order, Is.Not.Null);
+            Assert.That(result, Is.True);
+            Assert.That(order2, Is.Not.Null);
+            Assert.That(order2?.Destination?.Name, Is.EqualTo("Jupiter"));
         }
 
         [Test]
         public async Task TestReadAllOrders()
         {
-            // Tu później test ReadAll
+            var orders = new List<TransportOrder>
+            {
+                new TransportOrder { ShipId = 1, PilotId = 2, DestinationId = 1 },
+                new TransportOrder { ShipId = 2, PilotId = 4, DestinationId = 2 },
+                new TransportOrder { ShipId = 3, PilotId = 1, DestinationId = 3 }
+            };
+            await _db?.TransportOrders.AddRangeAsync(orders)!;
+            await _db.SaveChangesAsync();
+            
+            var orders2 = await _s?.ReadAll()!;
+            
+            Assert.That(orders2, Is.Not.Null);
+            Assert.That(orders2.Count, Is.EqualTo(3));
         }
 
         [Test]
