@@ -57,6 +57,12 @@ public class DestinationService : IDestinationService
         if (dest == null)
             return false;
         
+        if (string.IsNullOrEmpty(uDest.Name))
+            return false;
+        
+        if (uDest.Name.Length > 50)
+            return false;
+        
         dest.Name = uDest.Name;
         _db.Destinations.Update(dest);
         var i = await _db.SaveChangesAsync();

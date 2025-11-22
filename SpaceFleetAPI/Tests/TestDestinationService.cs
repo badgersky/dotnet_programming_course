@@ -72,15 +72,46 @@ public class DestinationServiceTests
     [Test]
     public async Task TestDeleteDestination()
     {
+        var destination = new Destination() { Id = 1, Name = "Titan Station 2b" };
+        var result1 = await _s?.Create(destination)!;
+
+        var result2 = await _s?.Delete(1)!;
+        destination = await _s?.ReadOne(1)!;
+        
+        Assert.That(result1, Is.True);
+        Assert.That(result2, Is.True);
+        Assert.That(destination, Is.Null);
     }
 
     [Test]
-    public async Task TestReadOneDestination()
+    public async Task TestUpdateDestination1()
     {
-    }
+        var destination = new Destination() { Id = 1, Name = "Titan Station 2b" };
+        var result1 = await _s?.Create(destination)!;
 
+        destination = new Destination() { Id = 1, Name = "Titan Station 1b" };
+        var result2 = await _s?.Update(1, destination)!;
+        destination = await _s?.ReadOne(1)!;
+        
+        Assert.That(result1, Is.True);
+        Assert.That(result2, Is.True);
+        Assert.That(destination, Is.Not.Null);
+        Assert.That(destination?.Name, Is.EqualTo("Titan Station 1b"));
+    }
+    
     [Test]
-    public async Task TestUpdateDestination()
+    public async Task TestUpdateDestination2()
     {
+        var destination = new Destination() { Id = 1, Name = "Titan Station 2b" };
+        var result1 = await _s?.Create(destination)!;
+
+        destination = new Destination() { Id = 1, Name = "" };
+        var result2 = await _s?.Update(1, destination)!;
+        destination = await _s?.ReadOne(1)!;
+        
+        Assert.That(result1, Is.True);
+        Assert.That(result2, Is.False);
+        Assert.That(destination, Is.Not.Null);
+        Assert.That(destination?.Name, Is.EqualTo("Titan Station 2b"));
     }
 }
