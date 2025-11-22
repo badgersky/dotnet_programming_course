@@ -8,6 +8,10 @@ public class DestinationService : IDestinationService
 {
     private readonly SpaceFleetDbContext _db;
 
+    public event EventHandler<Destination>? DestinationCreated;
+    public event EventHandler<Destination>? DestinationUpdated;
+    public event EventHandler<Destination>? DestinationDeleted;
+    
     public DestinationService(SpaceFleetDbContext db)
     {
         _db = db;
@@ -27,7 +31,13 @@ public class DestinationService : IDestinationService
         
         _db.Destinations.Add(dest);
         var i = await _db.SaveChangesAsync();
-        return i > 0;
+        if (i > 0)
+        {
+            DestinationCreated?.Invoke(this, dest);
+            return true;
+        }
+        
+        return false;
     }
 
     public async Task<Destination?> ReadOne(int id)
@@ -48,7 +58,13 @@ public class DestinationService : IDestinationService
         
         _db.Destinations.Remove(dest);
         var i = await _db.SaveChangesAsync();
-        return i > 0;    
+        if (i > 0)
+        {
+            DestinationDeleted?.Invoke(this, dest);
+            return true;
+        }
+        
+        return false;  
     }
 
     public async Task<bool> Update(int id, Destination uDest)
@@ -66,6 +82,12 @@ public class DestinationService : IDestinationService
         dest.Name = uDest.Name;
         _db.Destinations.Update(dest);
         var i = await _db.SaveChangesAsync();
-        return i > 0;
+        if (i > 0)
+        {
+            DestinationUpdated?.Invoke(this, dest);
+            return true;
+        }
+        
+        return false;
     }
 }
