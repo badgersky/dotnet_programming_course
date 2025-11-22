@@ -53,14 +53,14 @@ public class DestinationService : IDestinationService
 
     public async Task<bool> Update(int id, Destination uDest)
     {
-        var dest = await _db.Destinations.FindAsync(id);
-        if (dest == null)
-            return false;
-        
         if (string.IsNullOrEmpty(uDest.Name))
             return false;
         
         if (uDest.Name.Length > 50)
+            return false;
+        
+        var dest = await _db.Destinations.FindAsync(id);
+        if (dest == null)
             return false;
         
         dest.Name = uDest.Name;

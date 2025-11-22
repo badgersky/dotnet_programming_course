@@ -22,6 +22,9 @@ public class PilotService : IPilotService
         if (string.IsNullOrEmpty(pilot.Name))
             return false;
         
+        if (pilot.Name.Length > 100)
+            return false;
+        
         _db.Pilots.Add(pilot);
         var i = await _db.SaveChangesAsync();
         return i > 0;
@@ -51,6 +54,9 @@ public class PilotService : IPilotService
     public async Task<bool> Update(int id, Pilot uPilot)
     {
         if (string.IsNullOrEmpty(uPilot.Name)) 
+            return false;
+        
+        if (uPilot.Name.Length > 100)
             return false;
         
         var pilot = await _db.Pilots.FindAsync(id);
