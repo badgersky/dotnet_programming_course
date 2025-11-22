@@ -1,9 +1,10 @@
 ## Space Fleet Rest API
 
 #### How to run?
- - Clone repository with "git clone [repository url]",
+ - Open command line,
+ - Clone repository with "git clone \<repository url>" command,
  - Open project in Jet Brains Rider or Visual Studio,
- - Open console and type "dotnet run" - the project should build and dependencies install,
+ - Open console in IDE and type "dotnet run" - dependencies should install and project should build,
  - Enter favorite browser and go to localhost:42069/swagger/index.html to test it out.
 
 #### What is this API?
@@ -18,7 +19,7 @@ It's mini project for my dotnet programming classes. It's REST API created in .N
 ![img.png](img.png)
 
 #### Correct get endpoints in my api are:
-- api/Pilot
-- api/Destination
-- api/Ship
-- api/TransportOrder
+- api/Pilot or api/Pilot/\<id>
+- api/Destination or api/Destination/\<id>
+- api/Ship or api/Ship/\<id
+- api/TransportOrder or api/TransportOrder/\<id>
