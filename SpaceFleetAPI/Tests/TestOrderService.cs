@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 using SpaceFleetAPI.Data;
+using SpaceFleetAPI.Extensions;
 using SpaceFleetAPI.Models;
 using SpaceFleetAPI.Services;
 
@@ -267,6 +268,60 @@ namespace SpaceFleetAPI.Tests
             Assert.That(order, Is.Not.Null);
             Assert.That(result, Is.False);
             Assert.That(order?.Finished, Is.True);
+        }
+        
+        [Test]
+        public async Task TestGetOrdersByPilotId()
+        {
+            var orders = new List<TransportOrder>
+            {
+                new TransportOrder { Id = 1, ShipId = 1, PilotId = 2, DestinationId = 1, Finished = false},
+                new TransportOrder { Id = 2, ShipId = 2, PilotId = 2, DestinationId = 2, Finished = false},
+                new TransportOrder { Id = 3, ShipId = 3, PilotId = 2, DestinationId = 3, Finished = false}
+            };
+            await _db!.TransportOrders.AddRangeAsync(orders);
+            await _db.SaveChangesAsync();
+
+            var result = await _s!.GetOrdersByPilotId(_db, 2);
+
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.Count, Is.EqualTo(3));
+        }
+        
+        [Test]
+        public async Task TestGetOrdersByShipId()
+        {
+            var orders = new List<TransportOrder>
+            {
+                new TransportOrder { Id = 1, ShipId = 1, PilotId = 2, DestinationId = 1, Finished = false},
+                new TransportOrder { Id = 2, ShipId = 1, PilotId = 3, DestinationId = 2, Finished = false},
+                new TransportOrder { Id = 3, ShipId = 3, PilotId = 4, DestinationId = 3, Finished = false}
+            };
+            await _db!.TransportOrders.AddRangeAsync(orders);
+            await _db.SaveChangesAsync();
+
+            var result = await _s!.GetOrdersByShipId(_db, 1);
+
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.Count, Is.EqualTo(2));
+        }
+        
+        [Test]
+        public async Task TestGetOrdersByDestinationId()
+        {
+            var orders = new List<TransportOrder>
+            {
+                new TransportOrder { Id = 1, ShipId = 1, PilotId = 2, DestinationId = 2, Finished = false},
+                new TransportOrder { Id = 2, ShipId = 2, PilotId = 3, DestinationId = 2, Finished = false},
+                new TransportOrder { Id = 3, ShipId = 3, PilotId = 4, DestinationId = 3, Finished = false}
+            };
+            await _db!.TransportOrders.AddRangeAsync(orders);
+            await _db.SaveChangesAsync();
+
+            var result = await _s!.GetOrdersByDestinationId(_db, 2);
+
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.Count, Is.EqualTo(2));
         }
     }
 }
