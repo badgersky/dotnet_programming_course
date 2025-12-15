@@ -12,8 +12,9 @@ class Program
         var serviceProvider = services.BuildServiceProvider();
         var inputService = serviceProvider.GetService<IInputService>();
         var downloadService = serviceProvider.GetService<ITextDownloader>();
-
-        if (inputService == null || downloadService == null)
+        var analyzeService = serviceProvider.GetService<IAnalyzeService>();
+        
+        if (inputService == null || downloadService == null || analyzeService == null)
         {
             Console.WriteLine("Services not created properly, closing the program...");
             return;
@@ -23,18 +24,13 @@ class Program
         var urls = await inputService.ReadUrls(path);
         var books = await downloadService.DownloadMany(urls);
 
-        foreach (var kvp in books)
-        {
-            if (!string.IsNullOrEmpty(kvp.Value))
-            {
-                Console.WriteLine($"Book successfully downloaded from {kvp.Key}");
-            }
-        }
+        
     }
 
     private static void ConfigureServices(IServiceCollection services)
     {
         services.AddSingleton<IInputService, InputService>();
         services.AddSingleton<ITextDownloader, TextDownloader>();
+        services.AddSingleton<IAnalyzeService, AnalyzeService>();
     }
 }
