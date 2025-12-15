@@ -1,4 +1,4 @@
-﻿namespace App;
+﻿namespace AsyncTextAnalyzer;
 
 class Program
 {
