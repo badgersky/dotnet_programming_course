@@ -1,4 +1,6 @@
-﻿using Core;
+﻿using System.Collections.Concurrent;
+using System.Diagnostics;
+using Core;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace App;
@@ -22,9 +24,33 @@ class Program
         
         var path = inputService.ReadPath();
         var urls = await inputService.ReadUrls(path);
-        var books = await downloadService.DownloadMany(urls);
-
         
+        var swDownload = Stopwatch.StartNew();
+        var books = await downloadService.DownloadMany(urls);
+        swDownload.Stop();
+        
+        var swAnalyze = Stopwatch.StartNew();
+        var globalCounts = new ConcurrentDictionary<string, int>();
+        Parallel.ForEach(books.Values, text =>
+            {
+                var normalized = analyzeService.NormalizeText(text);
+                var localCounts = analyzeService.CountWords(normalized);
+
+                foreach (var kv in localCounts)
+                {
+                    globalCounts.AddOrUpdate(kv.Key, kv.Value, (_, v) => v + kv.Value);
+                }
+            });
+        swAnalyze.Stop();
+        
+        Console.WriteLine("\n10 most frequently used words:");
+        foreach (var kv in globalCounts.OrderByDescending(kv => kv.Value).Take(10))
+        {
+            Console.WriteLine($"{kv.Key}: {kv.Value}");
+        }
+        
+        Console.WriteLine($"Download time: {swDownload.Elapsed.TotalSeconds:F2}s");
+        Console.WriteLine($"Analyze time: {swAnalyze.Elapsed.TotalSeconds:F2}s");
     }
 
     private static void ConfigureServices(IServiceCollection services)
