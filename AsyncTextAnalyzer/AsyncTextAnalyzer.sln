@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AsyncTextAnalyzer", "AsyncTextAnalyzer.csproj", "{9B7E6B61-20E6-4FD3-9365-42E16A3F6646}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", "{E2A7AC85-D605-4B69-8405-3F7369067DF3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{C23F6DD0-F28F-4C1A-BEEB-ABE93E109AC3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9B7E6B61-20E6-4FD3-9365-42E16A3F6646}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B7E6B61-20E6-4FD3-9365-42E16A3F6646}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B7E6B61-20E6-4FD3-9365-42E16A3F6646}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B7E6B61-20E6-4FD3-9365-42E16A3F6646}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E2A7AC85-D605-4B69-8405-3F7369067DF3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E2A7AC85-D605-4B69-8405-3F7369067DF3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E2A7AC85-D605-4B69-8405-3F7369067DF3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E2A7AC85-D605-4B69-8405-3F7369067DF3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C23F6DD0-F28F-4C1A-BEEB-ABE93E109AC3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C23F6DD0-F28F-4C1A-BEEB-ABE93E109AC3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C23F6DD0-F28F-4C1A-BEEB-ABE93E109AC3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C23F6DD0-F28F-4C1A-BEEB-ABE93E109AC3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
